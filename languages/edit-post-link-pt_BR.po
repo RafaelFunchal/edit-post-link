@@ -1,0 +1,152 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Edit Post Link v0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-28 12:59-0300\n"
+"PO-Revision-Date: 2013-06-28 13:03-0300\n"
+"Last-Translator: Rafael Funchal <rafaelfunchal@gmail.com>\n"
+"Language-Team: Rafael Funchal <contato@rafaelfunchal.com.br>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+# @ edit-post-link
+#: edit-post-link.php:24
+msgid ""
+"Error: plugin \"Edit Post Link\" requires a newer version of PHP to be "
+"running."
+msgstr ""
+"Erro: O plugin \"Edit Post Link\" necessita de uma versão mais recente do "
+"PHP."
+
+# @ edit-post-link
+#: edit-post-link.php:25
+msgid "Minimal version of PHP required: "
+msgstr "Versão mínima do PHP necessária: "
+
+# @ edit-post-link
+#: edit-post-link.php:26
+msgid "Your server's PHP version: "
+msgstr "Versão do PHP do seu servidor: "
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:246
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Você não tem permissão suficiente para acessar essa página."
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:264
+msgid "System Settings"
+msgstr "Configurações do Sistema"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:266
+msgid "System"
+msgstr "Sistema"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:267
+msgid "PHP Version"
+msgstr "Versão do PHP"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:272
+msgid ""
+"(WARNING: This plugin may not work properly with versions earlier than PHP "
+"5.2)"
+msgstr ""
+"(Aviso: Esse plugin pode não funcionar corretamente em versões do PHP "
+"anteriores a 5.2)"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:278
+msgid "MySQL Version"
+msgstr "Versão do MySQL"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:283
+msgid ""
+"(WARNING: This plugin may not work properly with versions earlier than MySQL "
+"5.0)"
+msgstr ""
+"(Aviso: Esse plugin pode não funcionar corretamente em versões do MySQL "
+"anteriores a 5.0)"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:291
+msgid "Settings"
+msgstr "Configurações"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:313
+msgid "Save Changes"
+msgstr "Salvar Alterações"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:371
+msgid "true"
+msgstr "verdadeiro"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:373
+msgid "false"
+msgstr "falso"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:376
+msgid "Administrator"
+msgstr "Administrador"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:378
+msgid "Editor"
+msgstr "Editor"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:380
+msgid "Author"
+msgstr "Autor"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:382
+msgid "Contributor"
+msgstr "Colaborador"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:384
+msgid "Subscriber"
+msgstr "Assinante"
+
+# @ edit-post-link
+#: EditPostLink_OptionsManager.php:386
+msgid "Anyone"
+msgstr "Todos"
+
+# @ edit-post-link
+#: EditPostLink_Plugin.php:14
+msgid "Background color"
+msgstr "Cor do fundo"
+
+# @ edit-post-link
+#: EditPostLink_Plugin.php:15
+msgid "Border color"
+msgstr "Cor da borda"
+
+# @ edit-post-link
+#: EditPostLink_Plugin.php:16
+msgid "Font color"
+msgstr "Cor da fonte"
+
+# @ edit-post-link
+#: EditPostLink_Plugin.php:113
+msgid "Edit"
+msgstr "Editar"
