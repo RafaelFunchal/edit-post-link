@@ -1,5 +1,5 @@
 === Edit Post Link ===
-Contributors: RafaelFunchal
+Contributors: rafaelfunchal
 Donate link: http://www.rafaelfunchal.com.br/
 Tags: link, edit, post, button
 License: GPLv2 or later
