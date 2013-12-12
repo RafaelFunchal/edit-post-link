@@ -1,4 +1,4 @@
-$(document).ready(function(){
+jQuery(document).ready(function($){
 	$('.edit-post-link').mouseover(function() {
 		$(this).animate({
 			width: '50px',
