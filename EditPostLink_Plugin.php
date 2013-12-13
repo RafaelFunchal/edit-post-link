@@ -107,12 +107,14 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
     }
 	
 	public function showEditPostLink( $content ) {
-	    $content = sprintf(
-	                       '<a class="edit-post-link" href="%s" target="_blank">%s</a>%s',
-	                       get_edit_post_link(),
-	                       __( 'Edit', 'edit-post-link' ),
-	                       $content
-	                       );
+        if ( is_user_logged_in() && current_user_can( 'edit_post' ) ) {
+    	    $content = sprintf(
+                '<a class="edit-post-link" href="%s" target="_blank">%s</a>%s',
+                get_edit_post_link(),
+                __( 'Edit', 'edit-post-link' ),
+                $content
+            );
+        }
 	    return $content;
 	}
 

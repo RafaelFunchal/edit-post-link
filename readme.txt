@@ -28,6 +28,9 @@ A plugin to insert a stylized link to edit posts and pages
 
 == Changelog ==
 
+= 0.2.1 =
+- Fixed who can see the button.
+
 = 0.2 =
 - Fixed jQuery conflict.
 
