@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 0.2
+Stable tag: 0.2.1
 
 A plugin to insert a stylized link to edit posts and pages
 
