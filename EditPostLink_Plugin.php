@@ -13,7 +13,8 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
             //'_version' => array('Installed Version'), // Leave this one commented-out. Uncomment to test upgrades.
             'edit-post-link-bg-color' => array( __('Background color', 'edit-post-link' ) ),
             'edit-post-link-border-color' => array( __('Border color', 'edit-post-link' ) ),
-            'edit-post-link-font-color' => array( __('Font color', 'edit-post-link' ) )
+            'edit-post-link-font-color' => array( __('Font color', 'edit-post-link' ) ),
+            'edit-post-link-position' => array( __('Position', 'edit-post-link'), 'Above Content', 'Below Content' )
         );
     }
 
@@ -89,7 +90,6 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
         //            wp_enqueue_style('my-style', plugins_url('/css/my-style.css', __FILE__));
         //        }
 		if (strpos( $_SERVER['REQUEST_URI'], $this->getSettingsSlug()) !== false ) {
-			wp_enqueue_style( 'wp-color-picker' );
 			wp_enqueue_script( 'color-picker-script', plugins_url( '/js/iris-script.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
 		}
 
@@ -97,26 +97,33 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
         // http://plugin.michael-simpson.com/?page_id=37
 		// add_filter( 'the_content', array( &$this, 'showEditPostLink' ) );
 		add_filter( 'the_content', array( &$this, 'showEditPostLink' ) );
-		add_action( 'wp_head', array( &$this, 'stylesEditPostLink' ) );
 
         // Adding scripts & styles to all pages
         // Examples:
         wp_enqueue_script( 'jquery' );
-        wp_enqueue_style( 'edit-post-link-style', plugins_url( '/css/styles.css', __FILE__ ) );
-        wp_enqueue_script( 'edit-post-link-scripts', plugins_url( '/js/scripts.js', __FILE__ ) );
     }
-	
-	public function showEditPostLink( $content ) {
-        if ( is_user_logged_in() && current_user_can( 'edit_post' ) ) {
-    	    $content = sprintf(
-                '<a class="edit-post-link" href="%s" target="_blank">%s</a>%s',
-                get_edit_post_link(),
-                __( 'Edit', 'edit-post-link' ),
-                $content
-            );
-        }
-	    return $content;
-	}
+
+    public function showEditPostLink( $content ) {
+          if ( is_user_logged_in() && current_user_can( 'edit_post' ) ) {
+            if ( $this->getOption( 'edit-post-link-position' ) === 'Above Content' ) {
+      	      $content = sprintf(
+                  '<p><a class="edit-post-link" href="%s" target="_blank">%s</a></p>%s',
+                  get_edit_post_link(),
+                  __( 'Edit', 'edit-post-link' ),
+                  $content
+              );
+            } else {
+              $content = sprintf(
+                  '%s<p><a class="edit-post-link" href="%s" target="_blank">%s</a></p>',
+  				        $content,
+                  get_edit_post_link(),
+                  __( 'Edit', 'edit-post-link' )
+              );
+            }
+          }
+  	    return $content;
+  	}
+
 
 	public function stylesEditPostLink() {
 		$styles = sprintf( '<style type="text/css" media="screen">
