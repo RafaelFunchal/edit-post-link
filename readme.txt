@@ -1,6 +1,5 @@
 === Edit Post Link ===
-Contributors: rafaelfunchal
-Donate link: http://www.rafaelfunchal.com.br/
+Contributors: rafaelfunchal, ourvalley
 Tags: link, edit, post, button
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
