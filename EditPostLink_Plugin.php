@@ -14,7 +14,8 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
             'edit-post-link-bg-color' => array( __('Background color', 'edit-post-link' ) ),
             'edit-post-link-border-color' => array( __('Border color', 'edit-post-link' ) ),
             'edit-post-link-font-color' => array( __('Font color', 'edit-post-link' ) ),
-            'edit-post-link-position' => array( __('Position', 'edit-post-link'), 'Above Content', 'Below Content' )
+            'edit-post-link-position' => array( __('Position', 'edit-post-link'), __('Above Content', 'edit-post-link'), __('Below Content', 'edit-post-link') ),
+            'edit-post-link-styles' => array( __( 'Load plugin styles?', 'edit-post-link'), __('Yes', 'edit-post-link'), __('No', 'edit-post-link') )
         );
     }
 
@@ -97,15 +98,21 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
         // http://plugin.michael-simpson.com/?page_id=37
 		// add_filter( 'the_content', array( &$this, 'showEditPostLink' ) );
 		add_filter( 'the_content', array( &$this, 'showEditPostLink' ) );
+    add_action( 'wp_head', array( &$this, 'stylesEditPostLink' ) );
 
         // Adding scripts & styles to all pages
         // Examples:
         wp_enqueue_script( 'jquery' );
+        
+        if ( $this->getOption( 'edit-post-link-styles' ) === __('Yes', 'edit-post-link') ) {
+          wp_enqueue_style( 'edit-post-link-style', plugins_url( '/css/styles.css', __FILE__ ) );
+          wp_enqueue_script( 'edit-post-link-scripts', plugins_url( '/js/scripts.js', __FILE__ ) );
+        }
     }
 
     public function showEditPostLink( $content ) {
           if ( is_user_logged_in() && current_user_can( 'edit_post' ) ) {
-            if ( $this->getOption( 'edit-post-link-position' ) === 'Above Content' ) {
+            if ( $this->getOption( 'edit-post-link-position' ) === __('Above Content', 'edit-post-link') ) {
       	      $content = sprintf(
                   '<p><a class="edit-post-link" href="%s" target="_blank">%s</a></p>%s',
                   get_edit_post_link(),
@@ -126,14 +133,15 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 
 
 	public function stylesEditPostLink() {
-		$styles = sprintf( '<style type="text/css" media="screen">
-		.edit-post-link { background-color: %s !important; border-color: %s !important; color: %s !important;
-		</style>',
-			$this->getOption( 'edit-post-link-bg-color' ),
-			$this->getOption( 'edit-post-link-border-color' ),
-			$this->getOption( 'edit-post-link-font-color' )
-		);
-		echo $styles;
+    if ( $this->getOption( 'edit-post-link-styles' ) === __('Yes', 'edit-post-link') ) {
+  		$styles = sprintf( '<style type="text/css" media="screen">
+  		.edit-post-link { background-color: %s !important; border-color: %s !important; color: %s !important;
+  		</style>',
+  			$this->getOption( 'edit-post-link-bg-color' ),
+  			$this->getOption( 'edit-post-link-border-color' ),
+  			$this->getOption( 'edit-post-link-font-color' )
+  		);
+  		echo $styles;
+    }
 	}
-
 }
