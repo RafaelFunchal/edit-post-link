@@ -23,6 +23,10 @@ A plugin to insert a stylized link to edit posts and pages
 
 
 == Screenshots ==
+1. Settings page configured to don't load the plugin styles.
+2. The Edit button uses theme's link styles in this case.
+3. Settings page configured to load the plugin styles.
+4. A button will be displayed using the colors set on the plugin's settings page.
 
 
 == Changelog ==
