@@ -1,0 +1,135 @@
+# Copyright (C) 2019 rafaelfunchal
+# This file is distributed under the same license as the Edit Post Link plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Edit Post Link 0.2.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/edit-post-link\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2019-02-07T19:24:21+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.1.0\n"
+"X-Domain: edit-post-link\n"
+
+#. Plugin Name of the plugin
+msgid "Edit Post Link"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/rafaelfunchal/edit-post-link"
+msgstr ""
+
+#. Description of the plugin
+msgid "A plugin to insert a stylized link to edit posts and pages"
+msgstr ""
+
+#. Author of the plugin
+msgid "rafaelfunchal"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://rafaelfunchal.com/"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:246
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:264
+msgid "Settings"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:286
+msgid "Save Changes"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:344
+msgid "true"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:346
+msgid "false"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:349
+msgid "Administrator"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:351
+msgid "Editor"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:353
+msgid "Author"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:355
+msgid "Contributor"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:357
+msgid "Subscriber"
+msgstr ""
+
+#: EditPostLink_OptionsManager.php:359
+msgid "Anyone"
+msgstr ""
+
+#: EditPostLink_Plugin.php:13
+msgid "Background color"
+msgstr ""
+
+#: EditPostLink_Plugin.php:14
+msgid "Border color"
+msgstr ""
+
+#: EditPostLink_Plugin.php:15
+msgid "Font color"
+msgstr ""
+
+#: EditPostLink_Plugin.php:16
+msgid "Position"
+msgstr ""
+
+#: EditPostLink_Plugin.php:16
+#: EditPostLink_Plugin.php:102
+msgid "Above Content"
+msgstr ""
+
+#: EditPostLink_Plugin.php:16
+msgid "Below Content"
+msgstr ""
+
+#: EditPostLink_Plugin.php:17
+msgid "Load plugin styles?"
+msgstr ""
+
+#: EditPostLink_Plugin.php:17
+#: EditPostLink_Plugin.php:94
+#: EditPostLink_Plugin.php:122
+msgid "Yes"
+msgstr ""
+
+#: EditPostLink_Plugin.php:17
+msgid "No"
+msgstr ""
+
+#: EditPostLink_Plugin.php:106
+#: EditPostLink_Plugin.php:114
+msgid "Edit"
+msgstr ""
+
+#: edit-post-link.php:24
+msgid "Error: plugin \"Edit Post Link\" requires a newer version of PHP to be running."
+msgstr ""
+
+#: edit-post-link.php:25
+msgid "Minimal version of PHP required: "
+msgstr ""
+
+#: edit-post-link.php:26
+msgid "Your server's PHP version: "
+msgstr ""
