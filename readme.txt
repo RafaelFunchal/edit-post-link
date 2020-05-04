@@ -4,7 +4,7 @@ Tags: link, edit, post, button
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.5
-Tested up to: 5.0.3
+Tested up to: 5.4.1
 Stable tag: 0.2.3.1
 
 A plugin to insert a stylized link to edit posts and pages
