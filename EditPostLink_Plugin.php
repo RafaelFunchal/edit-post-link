@@ -14,6 +14,7 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 						'edit-post-link-border-color' => array( __('Border color', 'edit-post-link' ) ),
 						'edit-post-link-font-color' => array( __('Font color', 'edit-post-link' ) ),
 						'edit-post-link-position' => array( __('Position', 'edit-post-link'), __('Above Content', 'edit-post-link'), __('Below Content', 'edit-post-link') ),
+						'edit-post-link-type' => array( __( 'Link Type', 'edit-post-link'), __('Button', 'edit-post-link'), __('Circle', 'edit-post-link') ),
 						'edit-post-link-styles' => array( __( 'Load plugin styles?', 'edit-post-link'), __('Yes', 'edit-post-link'), __('No', 'edit-post-link') )
 				);
 		}
@@ -87,29 +88,44 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			add_filter( 'the_content', array( &$this, 'showEditPostLink' ) );
 			add_action( 'wp_head', array( &$this, 'stylesEditPostLink' ) );
 
-			// Adding scripts & styles to all pages
-			// Examples:
-			wp_enqueue_script( 'jquery' );
+			// Adding scripts & styles when necessary
+			function enqueue_edit_post_link_jquery($hook) {
+				if ( 'settings_page_EditPostLink_PluginSettings' != $hook ) {
+        			return;
+				}
+				wp_enqueue_script( 'jquery' );
+			}
+			add_action( 'admin_enqueue_scripts', 'enqueue_edit_post_link_jquery' );
 			
 			if ( $this->getOption( 'edit-post-link-styles' ) === __('Yes', 'edit-post-link') ) {
 				wp_enqueue_style( 'edit-post-link-style', plugins_url( '/css/styles.css', __FILE__ ) );
-				wp_enqueue_script( 'edit-post-link-scripts', plugins_url( '/js/scripts.js', __FILE__ ) );
 			}
 		}
 
 		public function showEditPostLink( $content ) {
 			if ( is_user_logged_in() && current_user_can( 'edit_post' ) ) {
+
+				// Type
+				if ( $this->getOption( 'edit-post-link-type' ) === __('Circle', 'edit-post-link') ) {
+					$epl_type = 'epl-circle';
+				} else {
+					$epl_type = 'epl-button';
+				}
+
+				// Position
 				if ( $this->getOption( 'edit-post-link-position' ) === __('Above Content', 'edit-post-link') ) {
 					$content = sprintf(
-							'<p><a class="edit-post-link" href="%s" target="_blank">%s</a></p>%s',
+							'<p><a class="edit-post-link %s" href="%s" target="_blank">%s</a></p>%s',
+							$epl_type,
 							get_edit_post_link(),
 							__( 'Edit', 'edit-post-link' ),
 							$content
 					);
 				} else {
 					$content = sprintf(
-							'%s<p><a class="edit-post-link" href="%s" target="_blank">%s</a></p>',
+							'%s<p><a class="edit-post-link %s" href="%s" target="_blank">%s</a></p>',
 							$content,
+							$epl_type,
 							get_edit_post_link(),
 							__( 'Edit', 'edit-post-link' )
 					);
