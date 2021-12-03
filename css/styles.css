@@ -4,21 +4,69 @@
 .edit-post-link {
 	border-style: solid;
 	border-width: 2px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
 	border-radius: 10px;
 	font-size: 14px;
 	font-weight: bold;
-	height: 15px;
+	height: 20px;
+	line-height: 14px;
+	text-transform: uppercase;
+}
+
+/* Link Type: Button */
+.edit-post-link.epl-button {
+	position: relative;
+	padding: 10px;
+}
+.edit-post-link.epl-button:hover {
+	box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+	top: -5px;
+}
+
+/* Link Type: Circle */
+.edit-post-link.epl-circle {
+	animation: elp-slideout ease 0.4s forwards;
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: bold;
 	line-height: 14px;
 	margin-top: -20px;
 	overflow: hidden;
+	padding: 3px 5px;
 	position: absolute;
 	text-align: center;
-	text-decoration: none;
 	text-indent: -999px;
-	width: 15px;
-	}
-.edit-post-link:hover {
 	text-decoration: none;
+	width: 20px;
+}
+.edit-post-link.epl-circle:hover {
+	animation: epl-slidein ease 0.4s forwards;
+	height: 25px;
+	width: 50px;
+}
+/* Animation Keyframes */
+@keyframes epl-slidein {
+	from {
+		height: 20px;
+		width: 20px;
+		text-indent: -999px;
+	}
+	to {
+		height: 25px;
+		width: 50px;
+		text-indent: 0;
+	}
+}
+@keyframes epl-slideout {
+	from {
+		height: 25px;
+		width: 50px;
+		text-indent: 0;
+	}
+	to {
+		height: 20px;
+		width: 20px;
+		text-indent: -999px;
+	}
 }
