@@ -1,0 +1,124 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: edit-post-link\n"
+"Language: es\n"
+
+#. @ edit-post-link
+#: edit-post-link.php:24
+msgid "Error: plugin \"Edit Post Link\" requires a newer version of PHP to be running."
+msgstr "Error: El plugin \"Edit Post Link\" requiere una versión de PHP más actualizada."
+
+#. @ edit-post-link
+#: edit-post-link.php:25
+msgid "Minimal version of PHP required: "
+msgstr "Versión mínima de PHP: "
+
+#. @ edit-post-link
+#: edit-post-link.php:26
+msgid "Your server's PHP version: "
+msgstr "La versión de PHP de tu servidor: "
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:246
+msgid "You do not have sufficient permissions to access this page."
+msgstr "No tiene permiso para acceder a esta página."
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:264
+msgid "Settings"
+msgstr "Configuración"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:286
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:344
+msgid "true"
+msgstr "verdadero"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:346
+msgid "false"
+msgstr "falso"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:349
+msgid "Administrator"
+msgstr "Administrador"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:351
+msgid "Editor"
+msgstr "Editor"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:353
+msgid "Author"
+msgstr "Autor"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:355
+msgid "Contributor"
+msgstr "Colaborador"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:357
+msgid "Subscriber"
+msgstr "Suscriptor"
+
+#. @ edit-post-link
+#: EditPostLink_OptionsManager.php:359
+msgid "Anyone"
+msgstr "Cualquiera"
+
+#. @ edit-post-link
+#: EditPostLink_Plugin.php:13
+msgid "Background color"
+msgstr "Color de fondo"
+
+#. @ edit-post-link
+#: EditPostLink_Plugin.php:14
+msgid "Border color"
+msgstr "Color del borde"
+
+#. @ edit-post-link
+#: EditPostLink_Plugin.php:15
+msgid "Font color"
+msgstr "Color de la fuente"
+
+#. @ edit-post-link
+#: EditPostLink_Plugin.php:106 EditPostLink_Plugin.php:114
+msgid "Edit"
+msgstr "Editar"
+
+#: EditPostLink_Plugin.php:16
+msgid "Position"
+msgstr "Posición"
+
+#: EditPostLink_Plugin.php:16 EditPostLink_Plugin.php:102
+msgid "Above Content"
+msgstr "Antes del contenido"
+
+#: EditPostLink_Plugin.php:16
+msgid "Below Content"
+msgstr "Después del contenido"
+
+#: EditPostLink_Plugin.php:17
+msgid "Load plugin styles?"
+msgstr "¿Cargar los estilos del plugin?"
+
+#: EditPostLink_Plugin.php:17 EditPostLink_Plugin.php:94
+#: EditPostLink_Plugin.php:122
+msgid "Yes"
+msgstr "Sí"
+
+#: EditPostLink_Plugin.php:17
+msgid "No"
+msgstr "No"
+
