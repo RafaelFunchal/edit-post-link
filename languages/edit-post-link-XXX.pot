@@ -164,3 +164,9 @@ msgstr ""
 #: 
 msgid "Circle"
 msgstr ""
+
+# @ edit-post-link
+#:
+msgid "Link Type"
+msgstr ""
+

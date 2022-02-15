@@ -153,3 +153,8 @@ msgstr "Botón"
 msgid "Circle"
 msgstr "Círculo"
 
+#. @ edit-post-link
+#: 
+msgid "Link Type"
+msgstr "Tipo de enlace"
+
