@@ -13,6 +13,7 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 						'edit-post-link-bg-color' => array( __('Background color', 'edit-post-link' ) ),
 						'edit-post-link-border-color' => array( __('Border color', 'edit-post-link' ) ),
 						'edit-post-link-font-color' => array( __('Font color', 'edit-post-link' ) ),
+						'edit-post-link-edit-window' => array( __('Edit content in', 'edit-post-link'), __('Same window', 'edit-post-link'), __('New window', 'edit-post-link') ),
 						'edit-post-link-position' => array( __('Position', 'edit-post-link'), __('Above Content', 'edit-post-link'), __('Below Content', 'edit-post-link') ),
 						'edit-post-link-type' => array( __( 'Link Type', 'edit-post-link'), __('Button', 'edit-post-link'), __('Circle', 'edit-post-link') ),
 						'edit-post-link-styles' => array( __( 'Load plugin styles?', 'edit-post-link'), __('Yes', 'edit-post-link'), __('No', 'edit-post-link') )
@@ -23,7 +24,7 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				$options = $this->getOptionMetaData();
 				if (!empty($options)) {
 						foreach ($options as $key => $arr) {
-								if (is_array($arr) && count($arr > 1)) {
+								if (is_array($arr) && count($arr) > 1) {
 										$this->addOption($key, $arr[1]);
 								}
 						}
@@ -111,11 +112,15 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				} else {
 					$epl_type = 'epl-button';
 				}
-
+				// Edit Window
+				$target = "";
+				if( $this->getOption( 'edit-post-link-edit-window') === __('New window', 'edit-post-link') ) {
+					$target = ' target="_blank"';
+				}
 				// Position
 				if ( $this->getOption( 'edit-post-link-position' ) === __('Above Content', 'edit-post-link') ) {
 					$content = sprintf(
-							'<p><a class="edit-post-link %s" href="%s" target="_blank">%s</a></p>%s',
+							'<p><a class="edit-post-link %s" href="%s"'.$target.'>%s</a></p>%s',
 							$epl_type,
 							get_edit_post_link(),
 							__( 'Edit', 'edit-post-link' ),
@@ -123,7 +128,7 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 					);
 				} else {
 					$content = sprintf(
-							'%s<p><a class="edit-post-link %s" href="%s" target="_blank">%s</a></p>',
+							'%s<p><a class="edit-post-link %s" href="%s"'.$target.'>%s</a></p>',
 							$content,
 							$epl_type,
 							get_edit_post_link(),
