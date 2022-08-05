@@ -5,7 +5,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.5
 Tested up to: 5.9
-Stable tag: 0.2.4.0
+Stable tag: 0.2.4.1
 
 A plugin to insert a stylized link to edit posts and pages
 
@@ -30,6 +30,9 @@ A plugin to insert a stylized link to edit posts and pages
 
 
 == Changelog ==
+
+= 0.2.4.1 =
+- Fixing a Fatal Error created when activating the plugin on PHP 8.0.
 
 = 0.2.4.0 =
 - Add link type options (button and circle).
