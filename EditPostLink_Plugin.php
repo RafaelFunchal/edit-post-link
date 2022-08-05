@@ -23,7 +23,7 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				$options = $this->getOptionMetaData();
 				if (!empty($options)) {
 						foreach ($options as $key => $arr) {
-								if (is_array($arr) && count($arr > 1)) {
+								if (is_array($arr) && count($arr) > 1 ) {
 										$this->addOption($key, $arr[1]);
 								}
 						}
@@ -96,7 +96,7 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				wp_enqueue_script( 'jquery' );
 			}
 			add_action( 'admin_enqueue_scripts', 'enqueue_edit_post_link_jquery' );
-			
+
 			if ( $this->getOption( 'edit-post-link-styles' ) === __('Yes', 'edit-post-link') ) {
 				wp_enqueue_style( 'edit-post-link-style', plugins_url( '/css/styles.css', __FILE__ ) );
 			}
