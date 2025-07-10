@@ -4,8 +4,8 @@
  * Plugin URI: https://github.com/rafaelfunchal/edit-post-link
  * Description: A plugin to insert a stylized link to edit posts and pages
  * Author: rafaelfunchal
- * Author URI: http://rafaelfunchal.com/
- * Version: 0.2.4.1
+ * Author URI: https://rafaelfunchal.com/
+ * Version: 0.2.4.2
  * License: GPLv2 or later
  * Text Domain: edit-post-link
  * Domain Path: /languages/
