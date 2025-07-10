@@ -88,6 +88,10 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			add_filter( 'the_content', array( &$this, 'showEditPostLink' ) );
 			add_action( 'wp_head', array( &$this, 'stylesEditPostLink' ) );
 
+			// Block Hooks API for block themes (WordPress 6.4+)
+			add_action( 'init', array( $this, 'register_edit_post_link_block' ) );
+			add_filter( 'hooked_block_types', array( $this, 'hook_edit_post_link_block' ), 10, 4 );
+
 			// Adding scripts & styles when necessary
 			function enqueue_edit_post_link_jquery($hook) {
 				if ( 'settings_page_EditPostLink_PluginSettings' != $hook ) {
@@ -145,5 +149,53 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			);
 			echo $styles;
 		}
+	}
+
+	/**
+	 * Register a dynamic block for the edit post link (for block themes)
+	 */
+	public function register_edit_post_link_block() {
+		if ( function_exists( 'register_block_type' ) ) {
+			register_block_type( 'edit-post-link/edit-link', array(
+				'render_callback' => array( $this, 'render_edit_post_link_block' ),
+			) );
+		}
+	}
+
+	/**
+	 * Render callback for the dynamic edit post link block
+	 */
+	public function render_edit_post_link_block( $attributes = array(), $content = '', $block = null ) {
+		if ( is_user_logged_in() && current_user_can( 'edit_post', get_the_ID() ) ) {
+			// Type
+			$epl_type = ($this->getOption( 'edit-post-link-type' ) === __('Circle', 'edit-post-link')) ? 'epl-circle' : 'epl-button';
+			// Position (always after content in block themes for now)
+			$url = get_edit_post_link();
+			if ( ! $url ) return '';
+			return sprintf(
+				'<p><a class="edit-post-link %s" href="%s" target="_blank">%s</a></p>',
+				esc_attr( $epl_type ),
+				esc_url( $url ),
+				esc_html__( 'Edit', 'edit-post-link' )
+			);
+		}
+		return '';
+	}
+
+	/**
+	 * Hook the edit post link block after the post content block in block themes
+	 */
+	public function hook_edit_post_link_block( $hooked_block_types, $relative_position, $anchor_block_type, $context ) {
+		// Only on single post templates
+		if (
+			$relative_position === 'after' &&
+			$anchor_block_type === 'core/post-content' &&
+			$context instanceof WP_Block_Template &&
+			property_exists( $context, 'slug' ) &&
+			$context->slug === 'single'
+		) {
+			$hooked_block_types[] = 'edit-post-link/edit-link';
+		}
+		return $hooked_block_types;
 	}
 }

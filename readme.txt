@@ -13,6 +13,8 @@ A plugin to insert a stylized link to edit posts and pages
 
 A plugin to insert a stylized link to edit posts and pages
 
+Now works with both classic and block (FSE) themes. In block themes, the edit link is injected after the post content using the Block Hooks API (WordPress 6.4+).
+
 == Installation ==
 - Uncompress the download package
 - Upload folder including all files and sub directories to the /wp-content/plugins/ directory.
@@ -30,6 +32,9 @@ A plugin to insert a stylized link to edit posts and pages
 
 
 == Changelog ==
+
+= 0.2.4.2 =
+- Added compatibility with block themes (Full Site Editing) using the Block Hooks API (WordPress 6.4+). The edit link now appears after post content in both classic and block themes.
 
 = 0.2.4.1 =
 - Fixing a Fatal Error created when activating the plugin on PHP 8.0.
