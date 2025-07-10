@@ -3,9 +3,9 @@ Contributors: rafaelfunchal, ourvalley
 Tags: link, edit, post, button
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 3.5
-Tested up to: 6.0.1
-Stable tag: 0.2.4.1
+Requires at least: 7.4
+Tested up to: 6.8.1
+Stable tag: 0.2.4.2
 
 A plugin to insert a stylized link to edit posts and pages
 
@@ -32,6 +32,9 @@ Now works with both classic and block (FSE) themes. In block themes, the edit li
 
 
 == Changelog ==
+
+= 0.2.4.3 =
+- Confirmed compatibility with PHP 8.3 and WordPress 6.8.1. Minimum required PHP version is now 7.4.
 
 = 0.2.4.2 =
 - Added compatibility with block themes (Full Site Editing) using the Block Hooks API (WordPress 6.4+). The edit link now appears after post content in both classic and block themes.
