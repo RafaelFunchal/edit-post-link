@@ -9,9 +9,11 @@
  * License: GPLv2 or later
  * Text Domain: edit-post-link
  * Domain Path: /languages/
+ * Requires at least: 6.0
+ * Requires PHP: 7.0
  */
 
-$EditPostLink_minimalRequiredPhpVersion = '5.0';
+$EditPostLink_minimalRequiredPhpVersion = '7.0';
 
 /**
  * Check the PHP version and give a useful error message if the user's version is less than the required version

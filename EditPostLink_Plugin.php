@@ -77,61 +77,74 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 
 			// Add options administration page
 			// http://plugin.michael-simpson.com/?page_id=47
-			add_action('admin_menu', array(&$this, 'addSettingsSubMenuPage'));
-
-			if (strpos( $_SERVER['REQUEST_URI'], $this->getSettingsSlug()) !== false ) {
-				wp_enqueue_script( 'color-picker-script', plugins_url( '/js/iris-script.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
-			}
+			add_action('admin_menu', array($this, 'addSettingsSubMenuPage'));
 
 			// Add Actions & Filters
 			// http://plugin.michael-simpson.com/?page_id=37
-			add_filter( 'the_content', array( &$this, 'showEditPostLink' ) );
-			add_action( 'wp_head', array( &$this, 'stylesEditPostLink' ) );
+			add_filter( 'the_content', array( $this, 'showEditPostLinkInContent' ) );
+			add_filter( 'the_excerpt', array( $this, 'showEditPostLinkInExcerpt' ) );
+			add_action( 'wp_head', array( $this, 'stylesEditPostLink' ) );
 
-			// Adding scripts & styles when necessary
-			function enqueue_edit_post_link_jquery($hook) {
-				if ( 'settings_page_EditPostLink_PluginSettings' != $hook ) {
-        			return;
-				}
-				wp_enqueue_script( 'jquery' );
-			}
-			add_action( 'admin_enqueue_scripts', 'enqueue_edit_post_link_jquery' );
+			// Adding scripts only when necessary.
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueueEditPostLinkAdminAssets' ) );
 
 			if ( $this->getOption( 'edit-post-link-styles' ) === __('Yes', 'edit-post-link') ) {
 				wp_enqueue_style( 'edit-post-link-style', plugins_url( '/css/styles.css', __FILE__ ) );
 			}
 		}
 
-		public function showEditPostLink( $content ) {
-			if ( is_user_logged_in() && current_user_can( 'edit_post' ) ) {
-
-				// Type
-				if ( $this->getOption( 'edit-post-link-type' ) === __('Circle', 'edit-post-link') ) {
-					$epl_type = 'epl-circle';
-				} else {
-					$epl_type = 'epl-button';
-				}
-
-				// Position
-				if ( $this->getOption( 'edit-post-link-position' ) === __('Above Content', 'edit-post-link') ) {
-					$content = sprintf(
-							'<p><a class="edit-post-link %s" href="%s" target="_blank">%s</a></p>%s',
-							$epl_type,
-							get_edit_post_link(),
-							__( 'Edit', 'edit-post-link' ),
-							$content
-					);
-				} else {
-					$content = sprintf(
-							'%s<p><a class="edit-post-link %s" href="%s" target="_blank">%s</a></p>',
-							$content,
-							$epl_type,
-							get_edit_post_link(),
-							__( 'Edit', 'edit-post-link' )
-					);
-				}
+		public function enqueueEditPostLinkAdminAssets( $hook ) {
+			if ( 'settings_page_EditPostLink_PluginSettings' !== $hook ) {
+				return;
 			}
-			return $content;
+
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'color-picker-script', plugins_url( '/js/iris-script.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+		}
+
+		public function showEditPostLinkInContent( $content ) {
+			return $this->showEditPostLink( $content, false );
+		}
+
+		public function showEditPostLinkInExcerpt( $excerpt ) {
+			return $this->showEditPostLink( $excerpt, true );
+		}
+
+		private function showEditPostLink( $content, $is_excerpt ) {
+			if ( is_admin() || is_feed() || is_search() ) {
+				return $content;
+			}
+
+			$post = get_post();
+			if ( ! $post || ! is_user_logged_in() || ! current_user_can( 'edit_post', $post->ID ) ) {
+				return $content;
+			}
+
+			$edit_link = get_edit_post_link( $post->ID );
+			if ( ! $edit_link ) {
+				return $content;
+			}
+
+			// Excerpts should always append the link to keep summaries short and predictable.
+			$position = $is_excerpt ? __('Below Content', 'edit-post-link') : $this->getOption( 'edit-post-link-position' );
+			$link_html = $this->getEditPostLinkHtml( $edit_link );
+
+			if ( $position === __('Above Content', 'edit-post-link') ) {
+				return $link_html . $content;
+			}
+
+			return $content . $link_html;
+		}
+
+		private function getEditPostLinkHtml( $edit_link ) {
+			$epl_type = $this->getOption( 'edit-post-link-type' ) === __('Circle', 'edit-post-link') ? 'epl-circle' : 'epl-button';
+
+			return sprintf(
+				'<p><a class="edit-post-link %1$s" href="%2$s" target="_blank" rel="noopener noreferrer">%3$s</a></p>',
+				esc_attr( $epl_type ),
+				esc_url( $edit_link ),
+				esc_html__( 'Edit', 'edit-post-link' )
+			);
 		}
 
 	public function stylesEditPostLink() {
@@ -139,9 +152,9 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			$styles = sprintf( '<style type="text/css" media="screen">
 			.edit-post-link { background-color: %s !important; border-color: %s !important; color: %s !important;
 			</style>',
-				$this->getOption( 'edit-post-link-bg-color' ),
-				$this->getOption( 'edit-post-link-border-color' ),
-				$this->getOption( 'edit-post-link-font-color' )
+				esc_html( $this->getOption( 'edit-post-link-bg-color' ) ),
+				esc_html( $this->getOption( 'edit-post-link-border-color' ) ),
+				esc_html( $this->getOption( 'edit-post-link-font-color' ) )
 			);
 			echo $styles;
 		}
