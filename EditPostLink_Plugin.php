@@ -13,9 +13,11 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 						'edit-post-link-bg-color' => array( __('Background color', 'edit-post-link' ) ),
 						'edit-post-link-border-color' => array( __('Border color', 'edit-post-link' ) ),
 						'edit-post-link-font-color' => array( __('Font color', 'edit-post-link' ) ),
+						'edit-post-link-hover-bg-color' => array( __('Hover Background color', 'edit-post-link' ) ),
+						'edit-post-link-hover-font-color' => array( __('Hover Font color', 'edit-post-link' ) ),
 						'edit-post-link-position' => array( __('Position', 'edit-post-link'), __('Above Content', 'edit-post-link'), __('Below Content', 'edit-post-link') ),
-						'edit-post-link-type' => array( __( 'Link Type', 'edit-post-link'), __('Button', 'edit-post-link'), __('Circle', 'edit-post-link') ),
-						'edit-post-link-styles' => array( __( 'Load plugin styles?', 'edit-post-link'), __('Yes', 'edit-post-link'), __('No', 'edit-post-link') )
+						'edit-post-link-type' => array( __( 'Link Type', 'edit-post-link'), __('Button', 'edit-post-link'), __('Circle', 'edit-post-link'), __('Plain Text', 'edit-post-link') ),
+						'edit-post-link-hover-animation' => array( __( 'Hover Animation', 'edit-post-link' ), __('None', 'edit-post-link'), __('Lift', 'edit-post-link'), __('Grow', 'edit-post-link'), __('Pulse', 'edit-post-link'), __('Glow', 'edit-post-link') )
 				);
 		}
 
@@ -71,6 +73,8 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 		 * @return void
 		 */
 		public function upgrade() {
+			// Remove legacy option after replacing it with the Plain Text link type.
+			$this->deleteOption( 'edit-post-link-styles' );
 		}
 
 		public function addActionsAndFilters() {
@@ -88,8 +92,10 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			// Adding scripts only when necessary.
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueueEditPostLinkAdminAssets' ) );
 
-			if ( $this->getOption( 'edit-post-link-styles' ) === __('Yes', 'edit-post-link') ) {
-				wp_enqueue_style( 'edit-post-link-style', plugins_url( '/css/styles.css', __FILE__ ) );
+			if ( $this->shouldLoadPluginStyles() ) {
+				$styles_path = plugin_dir_path( __FILE__ ) . 'css/styles.css';
+				$styles_version = file_exists( $styles_path ) ? (string) filemtime( $styles_path ) : false;
+				wp_enqueue_style( 'edit-post-link-style', plugins_url( '/css/styles.css', __FILE__ ), array(), $styles_version );
 			}
 		}
 
@@ -137,24 +143,87 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 		}
 
 		private function getEditPostLinkHtml( $edit_link ) {
-			$epl_type = $this->getOption( 'edit-post-link-type' ) === __('Circle', 'edit-post-link') ? 'epl-circle' : 'epl-button';
+			$link_type = $this->getOption( 'edit-post-link-type' );
+
+			if ( $link_type === __('Plain Text', 'edit-post-link') || $link_type === __('Link', 'edit-post-link') ) {
+				return sprintf(
+					'<p><a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a></p>',
+					esc_url( $edit_link ),
+					esc_html__( 'Edit', 'edit-post-link' )
+				);
+			}
+
+			$epl_type = $link_type === __('Circle', 'edit-post-link') ? 'epl-circle' : 'epl-button';
+			$class_name = 'edit-post-link ' . $epl_type;
+
+			// Hover animation is intentionally supported only for the Button link type.
+			if ( $link_type === __('Button', 'edit-post-link') ) {
+				$hover_animation = $this->getOption( 'edit-post-link-hover-animation', __('None', 'edit-post-link') );
+				$hover_animation_class = $this->getHoverAnimationClass( $hover_animation );
+				$class_name .= ' ' . $hover_animation_class;
+			}
 
 			return sprintf(
-				'<p><a class="edit-post-link %1$s" href="%2$s" target="_blank" rel="noopener noreferrer">%3$s</a></p>',
-				esc_attr( $epl_type ),
+				'<p><a class="%1$s" href="%2$s" target="_blank" rel="noopener noreferrer">%3$s</a></p>',
+				esc_attr( trim( $class_name ) ),
 				esc_url( $edit_link ),
 				esc_html__( 'Edit', 'edit-post-link' )
 			);
 		}
 
+		private function getHoverAnimationClass( $hover_animation ) {
+			if ( $hover_animation === __('None', 'edit-post-link') ) {
+				return 'epl-anim-none';
+			}
+
+			if ( $hover_animation === __('Lift', 'edit-post-link') ) {
+				return 'epl-anim-lift';
+			}
+
+			if ( $hover_animation === __('Grow', 'edit-post-link') ) {
+				return 'epl-anim-grow';
+			}
+
+			if ( $hover_animation === __('Pulse', 'edit-post-link') ) {
+				return 'epl-anim-pulse';
+			}
+
+			if ( $hover_animation === __('Glow', 'edit-post-link') ) {
+				return 'epl-anim-glow';
+			}
+
+			// Default to no animation.
+			return 'epl-anim-none';
+		}
+
+	private function shouldLoadPluginStyles() {
+		$link_type = $this->getOption( 'edit-post-link-type' );
+
+		return $link_type !== __('Plain Text', 'edit-post-link') && $link_type !== __('Link', 'edit-post-link');
+	}
+
 	public function stylesEditPostLink() {
-		if ( $this->getOption( 'edit-post-link-styles' ) === __('Yes', 'edit-post-link') ) {
+		if ( $this->shouldLoadPluginStyles() ) {
+			$hover_bg_color = trim( (string) $this->getOption( 'edit-post-link-hover-bg-color' ) );
+			$hover_font_color = trim( (string) $this->getOption( 'edit-post-link-hover-font-color' ) );
+			$hover_rules = '';
+
+			if ( '' !== $hover_bg_color ) {
+				$hover_rules .= 'background-color: ' . esc_html( $hover_bg_color ) . ' !important;';
+			}
+
+			if ( '' !== $hover_font_color ) {
+				$hover_rules .= 'color: ' . esc_html( $hover_font_color ) . ' !important;';
+			}
+
 			$styles = sprintf( '<style type="text/css" media="screen">
-			.edit-post-link { background-color: %s !important; border-color: %s !important; color: %s !important;
+			.edit-post-link { background-color: %1$s !important; border-color: %2$s !important; color: %3$s !important; }
+			%4$s
 			</style>',
 				esc_html( $this->getOption( 'edit-post-link-bg-color' ) ),
 				esc_html( $this->getOption( 'edit-post-link-border-color' ) ),
-				esc_html( $this->getOption( 'edit-post-link-font-color' ) )
+				esc_html( $this->getOption( 'edit-post-link-font-color' ) ),
+				$hover_rules ? '.edit-post-link.epl-button:hover { ' . $hover_rules . ' }' : ''
 			);
 			echo $styles;
 		}
