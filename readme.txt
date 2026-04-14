@@ -6,13 +6,21 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 0.2.4.1
+Stable tag: 0.3.0.0
 
 A plugin to insert a stylized link to edit posts and pages
 
 == Description ==
 
 A plugin to insert a stylized link to edit posts and pages
+
+New in `0.3.0.0`:
+- Link types: `Button`, `Circle`, and `Plain Text`
+- Behavior controls: position (`Above`/`Below`) and open target (`New Tab`/`Same Tab`)
+- Hover customization: animation presets and hover color options
+- Live preview in settings that updates as options change
+- Better translations support for option-driven UI behavior
+- Security and accessibility hardening (validated settings, focus styles, larger circle hit area)
 
 == Installation ==
 - Uncompress the download package
@@ -31,6 +39,14 @@ A plugin to insert a stylized link to edit posts and pages
 
 
 == Changelog ==
+
+= 0.3.0.0 =
+- Add a redesigned settings experience with grouped controls and a live preview panel.
+- Add `Open Link In` behavior (`New Tab` or `Same Tab`) and keep position controls in the Behavior group.
+- Add hover customization controls (animation and hover colors), with conditional visibility based on selected link type.
+- Add translation-safe UI logic for settings interactions through localized config values.
+- Improve security with nonce verification and strict server-side option sanitization/validation.
+- Improve accessibility with keyboard focus-visible states and a larger compact circle hit area.
 
 = 0.2.4.1 =
 - Fixing a Fatal Error created when activating the plugin on PHP 8.0.

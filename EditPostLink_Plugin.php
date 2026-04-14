@@ -293,7 +293,7 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 						$option_groups = array(
 							'behavior' => array(
 								'title' => __( 'Behavior', 'edit-post-link' ),
-								'keys'  => array( 'edit-post-link-position', 'edit-post-link-target', 'edit-post-link-type', 'edit-post-link-hover-animation' ),
+								'keys'  => array( 'edit-post-link-position', 'edit-post-link-type', 'edit-post-link-target', 'edit-post-link-hover-animation' ),
 							),
 							'normal_colors' => array(
 								'title' => __( 'Default Colors', 'edit-post-link' ),
