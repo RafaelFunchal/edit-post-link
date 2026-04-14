@@ -5,68 +5,113 @@
 	border-style: solid;
 	border-width: 2px;
 	border-radius: 10px;
+	box-sizing: border-box;
+	display: inline-flex;
 	font-size: 14px;
 	font-weight: bold;
-	height: 20px;
+	min-height: 20px;
+	align-items: center;
+	justify-content: center;
 	line-height: 14px;
+	text-align: center;
 	text-transform: uppercase;
+	white-space: nowrap;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.edit-post-link:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
 }
 
 /* Link Type: Button */
 .edit-post-link.epl-button {
 	position: relative;
-	padding: 10px;
+	padding: 10px 12px;
+	text-decoration: none;
 }
 .edit-post-link.epl-button:hover {
-	box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-	top: -5px;
+	text-decoration: none;
 }
 
 /* Link Type: Circle */
 .edit-post-link.epl-circle {
-	animation: elp-slideout ease 0.4s forwards;
 	border-style: solid;
 	border-width: 2px;
-	border-radius: 10px;
-	font-size: 14px;
+	border-radius: 50%;
+	font-size: 0;
 	font-weight: bold;
-	line-height: 14px;
 	margin-top: -20px;
 	overflow: hidden;
-	padding: 3px 5px;
+	padding: 0;
 	position: absolute;
 	text-align: center;
-	text-indent: -999px;
 	text-decoration: none;
-	width: 20px;
+	width: auto;
+	min-width: 28px;
+	max-width: 28px;
+	height: 28px;
+	white-space: nowrap;
+	transition:
+		max-width 340ms cubic-bezier(0.22, 1, 0.36, 1),
+		padding 340ms cubic-bezier(0.22, 1, 0.36, 1),
+		font-size 220ms ease 70ms,
+		transform 220ms ease;
 }
 .edit-post-link.epl-circle:hover {
-	animation: epl-slidein ease 0.4s forwards;
-	height: 25px;
-	width: 50px;
+	max-width: min(85vw, 360px);
+	padding: 0 10px;
+	font-size: 12px;
+	border-radius: 999px;
+	transform: translateY(-1px);
 }
-/* Animation Keyframes */
-@keyframes epl-slidein {
-	from {
-		height: 20px;
-		width: 20px;
-		text-indent: -999px;
-	}
-	to {
-		height: 25px;
-		width: 50px;
-		text-indent: 0;
-	}
+.edit-post-link.epl-circle:focus-visible {
+	max-width: min(85vw, 360px);
+	padding: 0 10px;
+	font-size: 12px;
+	border-radius: 999px;
+	transform: translateY(-1px);
 }
-@keyframes epl-slideout {
-	from {
-		height: 25px;
-		width: 50px;
-		text-indent: 0;
-	}
-	to {
-		height: 20px;
-		width: 20px;
-		text-indent: -999px;
-	}
+
+/* Hover Animations */
+.edit-post-link.epl-anim-none:hover {
+	transform: none;
+	box-shadow: none;
+	filter: none;
+}
+.edit-post-link.epl-anim-none:focus-visible {
+	transform: none;
+	box-shadow: none;
+	filter: none;
+}
+
+.edit-post-link.epl-anim-lift:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+}
+.edit-post-link.epl-anim-lift:focus-visible {
+	transform: translateY(-3px);
+	box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+}
+
+.edit-post-link.epl-anim-grow:hover {
+	transform: scale(1.06);
+}
+.edit-post-link.epl-anim-grow:focus-visible {
+	transform: scale(1.06);
+}
+
+.edit-post-link.epl-anim-pulse:hover {
+	transform: scale(1.03);
+	box-shadow: 0 0 0 6px rgba(0,0,0,0.08);
+}
+.edit-post-link.epl-anim-pulse:focus-visible {
+	transform: scale(1.03);
+	box-shadow: 0 0 0 6px rgba(0,0,0,0.08);
+}
+
+.edit-post-link.epl-anim-glow:hover {
+	filter: drop-shadow(0 0 8px rgba(0,0,0,0.35));
+}
+.edit-post-link.epl-anim-glow:focus-visible {
+	filter: drop-shadow(0 0 8px rgba(0,0,0,0.35));
 }
