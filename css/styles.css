@@ -16,10 +16,12 @@
 .edit-post-link.epl-button {
 	position: relative;
 	padding: 10px;
+	text-decoration: none;
 }
 .edit-post-link.epl-button:hover {
 	box-shadow: 0 5px 30px rgba(0,0,0,0.3);
 	top: -5px;
+	text-decoration: none;
 }
 
 /* Link Type: Circle */
