@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.0
-Stable tag: 0.3.0.0
+Stable tag: 0.3.0.1
 
 A plugin to insert a stylized link to edit posts and pages
 
@@ -21,7 +21,10 @@ New in `0.3.0.0`:
 - Live preview in settings that updates as options change
 - Better translations support for option-driven UI behavior
 - Security and accessibility hardening (validated settings, focus styles, larger circle hit area)
-- Block (FSE) themes: on single templates the edit link is also output after the post content using the Block Hooks API (WordPress 6.4+). The Above/Below position setting applies to classic `the_content` / `the_excerpt` output; block themes use the hooked placement after post content.
+
+New in `0.3.0.1`:
+- Block theme (FSE) support: on single templates the edit link is also output after the post content using the Block Hooks API (WordPress 6.4+). The Above/Below position setting applies to classic `the_content` / `the_excerpt` output; block themes use the hooked placement after post content.
+- Plugin icon shown next to the title on the settings page.
 
 == Installation ==
 - Uncompress the download package
@@ -41,6 +44,11 @@ New in `0.3.0.0`:
 
 == Changelog ==
 
+= 0.3.0.1 =
+- Add block theme (FSE) support: output the edit link after post content on single templates via the Block Hooks API (WordPress 6.4+), using the same markup as the classic output.
+- Show the plugin icon next to the title on the settings page.
+- Refresh the WordPress.org plugin directory assets (icon, banner, screenshots).
+
 = 0.3.0.0 =
 - Add a redesigned settings experience with grouped controls and a live preview panel.
 - Add `Open Link In` behavior (`New Tab` or `Same Tab`) and keep position controls in the Behavior group.
@@ -48,7 +56,6 @@ New in `0.3.0.0`:
 - Add translation-safe UI logic for settings interactions through localized config values.
 - Improve security with nonce verification and strict server-side option sanitization/validation.
 - Improve accessibility with keyboard focus-visible states and a larger compact circle hit area.
-- Add block theme (FSE) support: output the edit link after post content on single templates via the Block Hooks API, using the same markup as the classic output.
 
 = 0.2.4.3 =
 - Confirmed compatibility with PHP 8.3 and WordPress 6.8.1. Minimum required PHP version is now 7.4.

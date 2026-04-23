@@ -5,7 +5,7 @@
  * Description: A plugin to insert a stylized link to edit posts and pages
  * Author: rafaelfunchal
  * Author URI: http://rafaelfunchal.com/
- * Version: 0.3.0.0
+ * Version: 0.3.0.1
  * License: GPLv2 or later
  * Text Domain: edit-post-link
  * Domain Path: /languages/
