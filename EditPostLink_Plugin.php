@@ -260,6 +260,8 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 		?>
 		<div class="wrap edit-post-link-settings-page">
 			<style>
+				.edit-post-link-settings-page .epl-title { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; }
+				.edit-post-link-settings-page .epl-title-icon { width: 32px; height: 32px; flex: 0 0 32px; }
 				.edit-post-link-settings-page .epl-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
 				.edit-post-link-settings-page .epl-card { background: #fff; border: 1px solid #dcdcde; border-radius: 8px; box-shadow: 0 1px 1px rgba(0,0,0,.04); padding: 16px; }
 				.edit-post-link-settings-page .epl-card h3 { margin-top: 0; margin-bottom: 10px; }
@@ -287,7 +289,10 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				}
 			</style>
 
-			<h2><?php echo esc_html( $this->getPluginDisplayName() ); ?> <?php esc_html_e( 'Settings', 'edit-post-link' ); ?></h2>
+			<h2 class="epl-title">
+				<img class="epl-title-icon" src="<?php echo esc_url( plugins_url( '/assets/icon.svg', __FILE__ ) ); ?>" alt="" aria-hidden="true" />
+				<span><?php echo esc_html( $this->getPluginDisplayName() ); ?> <?php esc_html_e( 'Settings', 'edit-post-link' ); ?></span>
+			</h2>
 			<form method="post" action="">
 				<?php settings_fields( $settingsGroup ); ?>
 				<div class="epl-layout">
