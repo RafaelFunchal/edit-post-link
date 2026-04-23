@@ -1,0 +1,28 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Edit Post Link icon">
+  <defs>
+    <clipPath id="cursor-shape">
+      <path d="M 60,36 L 60,196 L 96,160 L 122,212 L 146,200 L 120,148 L 172,148 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Rounded-square badge (WordPress blue) -->
+  <rect width="256" height="256" rx="48" fill="#2271B1"/>
+
+  <!-- Pencil bands, clipped to the cursor silhouette -->
+  <g clip-path="url(#cursor-shape)">
+    <!-- Yellow barrel (default fill) -->
+    <rect width="256" height="256" fill="#FDB913"/>
+    <!-- Graphite tip -->
+    <rect y="0"   width="256" height="68" fill="#1F2937"/>
+    <!-- Wood collar -->
+    <rect y="68"  width="256" height="14" fill="#E0B589"/>
+    <!-- Ferrule -->
+    <rect y="144" width="256" height="10" fill="#C0C5CC"/>
+    <!-- Eraser (fills the cursor's notched tail) -->
+    <rect y="154" width="256" height="102" fill="#F472B6"/>
+  </g>
+
+  <!-- Dark outline holds the shape together at small sizes -->
+  <path d="M 60,36 L 60,196 L 96,160 L 122,212 L 146,200 L 120,148 L 172,148 Z"
+        fill="none" stroke="#0F172A" stroke-width="6" stroke-linejoin="round"/>
+</svg>
