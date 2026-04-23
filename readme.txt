@@ -21,6 +21,7 @@ New in `0.3.0.0`:
 - Live preview in settings that updates as options change
 - Better translations support for option-driven UI behavior
 - Security and accessibility hardening (validated settings, focus styles, larger circle hit area)
+- Block (FSE) themes: on single templates the edit link is also output after the post content using the Block Hooks API (WordPress 6.4+). The Above/Below position setting applies to classic `the_content` / `the_excerpt` output; block themes use the hooked placement after post content.
 
 == Installation ==
 - Uncompress the download package
@@ -47,6 +48,10 @@ New in `0.3.0.0`:
 - Add translation-safe UI logic for settings interactions through localized config values.
 - Improve security with nonce verification and strict server-side option sanitization/validation.
 - Improve accessibility with keyboard focus-visible states and a larger compact circle hit area.
+- Add block theme (FSE) support: output the edit link after post content on single templates via the Block Hooks API, using the same markup as the classic output.
+
+= 0.2.4.3 =
+- Confirmed compatibility with PHP 8.3 and WordPress 6.8.1. Minimum required PHP version is now 7.4.
 
 = 0.2.4.1 =
 - Fixing a Fatal Error created when activating the plugin on PHP 8.0.
