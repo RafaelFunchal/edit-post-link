@@ -26,6 +26,13 @@ New in `0.3.0.1`:
 - Block theme (FSE) support: on single templates the edit link is also output after the post content using the Block Hooks API (WordPress 6.4+). The Above/Below position setting applies to classic `the_content` / `the_excerpt` output; block themes use the hooked placement after post content.
 - Plugin icon shown next to the title on the settings page.
 
+New in `0.3.0.2`:
+- Confirmed compatibility with WordPress 7.1 and PHP 8.4.
+- Resolved PHP 8.4 deprecation warnings in the PHP version check.
+- Hooked translation loading and stylesheet enqueuing to proper hooks to prevent early-loading notices.
+- Hardened file security by adding direct access protection to all PHP files.
+- Removed outdated local translation files to reduce package size.
+
 == Installation ==
 - Uncompress the download package
 - Upload folder including all files and sub directories to the /wp-content/plugins/ directory.
