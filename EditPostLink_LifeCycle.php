@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 include_once('EditPostLink_InstallIndicator.php');
 
 class EditPostLink_LifeCycle extends EditPostLink_InstallIndicator {

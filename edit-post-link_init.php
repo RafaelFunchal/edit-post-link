@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function EditPostLink_init($file) {
 
 	require_once('EditPostLink_Plugin.php');

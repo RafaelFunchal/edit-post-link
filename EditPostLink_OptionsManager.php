@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class EditPostLink_OptionsManager {
 
 	public function getOptionNamePrefix() {

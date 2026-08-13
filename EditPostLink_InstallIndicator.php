@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 include_once('EditPostLink_OptionsManager.php');
 
 class EditPostLink_InstallIndicator extends EditPostLink_OptionsManager {
