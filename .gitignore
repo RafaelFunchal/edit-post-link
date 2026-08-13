@@ -30,7 +30,8 @@ node_modules
 .sass-cache
 
 # Ignore project files
-sftp-config.json
+Agents.md
+sftp-config.jsoni
 .ftppass
 *.zip
 src/node_modules/*

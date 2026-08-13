@@ -1,48 +1,68 @@
-# Copyright (C) 2019 rafaelfunchal
-# This file is distributed under the same license as the Edit Post Link plugin.
+# Copyright (C) 2026 rafaelfunchal
+# This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Edit Post Link 0.2.3\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/edit-post-link\n"
+"Project-Id-Version: Edit Post Link 0.3.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/GIT\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-02-07T19:24:21+00:00\n"
+"POT-Creation-Date: 2026-08-13T07:45:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.1.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: edit-post-link\n"
 
 #. Plugin Name of the plugin
+#: edit-post-link.php
 msgid "Edit Post Link"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: edit-post-link.php
 msgid "https://github.com/rafaelfunchal/edit-post-link"
 msgstr ""
 
 #. Description of the plugin
+#: edit-post-link.php
 msgid "A plugin to insert a stylized link to edit posts and pages"
 msgstr ""
 
 #. Author of the plugin
+#: edit-post-link.php
 msgid "rafaelfunchal"
 msgstr ""
 
 #. Author URI of the plugin
+#: edit-post-link.php
 msgid "http://rafaelfunchal.com/"
 msgstr ""
 
+#: edit-post-link.php:26
+msgid "Error: plugin \"Edit Post Link\" requires a newer version of PHP to be running."
+msgstr ""
+
+#: edit-post-link.php:27
+msgid "Minimal version of PHP required: "
+msgstr ""
+
+#: edit-post-link.php:28
+msgid "Your server's PHP version: "
+msgstr ""
+
 #: EditPostLink_OptionsManager.php:246
+#: EditPostLink_Plugin.php:246
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
 #: EditPostLink_OptionsManager.php:264
+#: EditPostLink_Plugin.php:294
 msgid "Settings"
 msgstr ""
 
 #: EditPostLink_OptionsManager.php:286
+#: EditPostLink_Plugin.php:361
 msgid "Save Changes"
 msgstr ""
 
@@ -83,53 +103,142 @@ msgid "Background color"
 msgstr ""
 
 #: EditPostLink_Plugin.php:14
-msgid "Border color"
-msgstr ""
-
-#: EditPostLink_Plugin.php:15
 msgid "Font color"
 msgstr ""
 
+#: EditPostLink_Plugin.php:15
+msgid "Hover Background color"
+msgstr ""
+
 #: EditPostLink_Plugin.php:16
+msgid "Hover Font color"
+msgstr ""
+
+#: EditPostLink_Plugin.php:17
 msgid "Position"
 msgstr ""
 
-#: EditPostLink_Plugin.php:16
-#: EditPostLink_Plugin.php:102
+#: EditPostLink_Plugin.php:17
+#: EditPostLink_Plugin.php:133
+#: EditPostLink_Plugin.php:170
 msgid "Above Content"
 msgstr ""
 
-#: EditPostLink_Plugin.php:16
+#: EditPostLink_Plugin.php:17
+#: EditPostLink_Plugin.php:134
+#: EditPostLink_Plugin.php:167
 msgid "Below Content"
 msgstr ""
 
-#: EditPostLink_Plugin.php:17
-msgid "Load plugin styles?"
+#: EditPostLink_Plugin.php:18
+msgid "Open Link In"
 msgstr ""
 
-#: EditPostLink_Plugin.php:17
-#: EditPostLink_Plugin.php:94
+#: EditPostLink_Plugin.php:18
+#: EditPostLink_Plugin.php:179
+msgid "New Tab"
+msgstr ""
+
+#: EditPostLink_Plugin.php:18
+#: EditPostLink_Plugin.php:180
+msgid "Same Tab"
+msgstr ""
+
+#: EditPostLink_Plugin.php:19
+msgid "Link Type"
+msgstr ""
+
+#: EditPostLink_Plugin.php:19
+#: EditPostLink_Plugin.php:120
+#: EditPostLink_Plugin.php:197
+msgid "Button"
+msgstr ""
+
+#: EditPostLink_Plugin.php:19
+#: EditPostLink_Plugin.php:121
+#: EditPostLink_Plugin.php:193
+msgid "Circle"
+msgstr ""
+
+#: EditPostLink_Plugin.php:19
 #: EditPostLink_Plugin.php:122
-msgid "Yes"
+#: EditPostLink_Plugin.php:183
+#: EditPostLink_Plugin.php:241
+msgid "Plain Text"
 msgstr ""
 
-#: EditPostLink_Plugin.php:17
-msgid "No"
+#: EditPostLink_Plugin.php:20
+msgid "Hover Animation"
 msgstr ""
 
-#: EditPostLink_Plugin.php:106
-#: EditPostLink_Plugin.php:114
+#: EditPostLink_Plugin.php:20
+#: EditPostLink_Plugin.php:126
+#: EditPostLink_Plugin.php:198
+#: EditPostLink_Plugin.php:214
+msgid "None"
+msgstr ""
+
+#: EditPostLink_Plugin.php:20
+#: EditPostLink_Plugin.php:127
+#: EditPostLink_Plugin.php:218
+msgid "Lift"
+msgstr ""
+
+#: EditPostLink_Plugin.php:20
+#: EditPostLink_Plugin.php:128
+#: EditPostLink_Plugin.php:222
+msgid "Grow"
+msgstr ""
+
+#: EditPostLink_Plugin.php:20
+#: EditPostLink_Plugin.php:129
+#: EditPostLink_Plugin.php:226
+msgid "Pulse"
+msgstr ""
+
+#: EditPostLink_Plugin.php:20
+#: EditPostLink_Plugin.php:130
+#: EditPostLink_Plugin.php:230
+msgid "Glow"
+msgstr ""
+
+#: EditPostLink_Plugin.php:123
+#: EditPostLink_Plugin.php:183
+#: EditPostLink_Plugin.php:241
+msgid "Link"
+msgstr ""
+
+#: EditPostLink_Plugin.php:189
+#: EditPostLink_Plugin.php:209
+#: EditPostLink_Plugin.php:350
+#: EditPostLink_Plugin.php:354
 msgid "Edit"
 msgstr ""
 
-#: edit-post-link.php:24
-msgid "Error: plugin \"Edit Post Link\" requires a newer version of PHP to be running."
+#: EditPostLink_Plugin.php:300
+msgid "Appearance"
 msgstr ""
 
-#: edit-post-link.php:25
-msgid "Minimal version of PHP required: "
+#: EditPostLink_Plugin.php:304
+msgid "Behavior"
 msgstr ""
 
-#: edit-post-link.php:26
-msgid "Your server's PHP version: "
+#: EditPostLink_Plugin.php:308
+msgid "Default Colors"
+msgstr ""
+
+#: EditPostLink_Plugin.php:312
+msgid "Hover Colors"
+msgstr ""
+
+#: EditPostLink_Plugin.php:345
+msgid "Live Preview"
+msgstr ""
+
+#: EditPostLink_Plugin.php:346
+msgid "Preview updates automatically as you change settings."
+msgstr ""
+
+#: EditPostLink_Plugin.php:352
+msgid "This is sample content to preview the link placement and style."
 msgstr ""
