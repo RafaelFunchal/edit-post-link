@@ -12,26 +12,17 @@ A plugin to insert a stylized link to edit posts and pages
 
 == Description ==
 
-A plugin to insert a stylized link to edit posts and pages
+**Edit Post Link** adds a highly customizable and stylized link or button to your posts, pages, and custom post types, allowing logged-in editors and administrators to quickly jump to the edit screen directly from the frontend.
 
-New in `0.3.0.0`:
-- Link types: `Button`, `Circle`, and `Plain Text`
-- Behavior controls: position (`Above`/`Below`) and open target (`New Tab`/`Same Tab`)
-- Hover customization: animation presets and hover color options
-- Live preview in settings that updates as options change
-- Better translations support for option-driven UI behavior
-- Security and accessibility hardening (validated settings, focus styles, larger circle hit area)
+No more hunting for the admin bar or navigating the dashboard. Just click the button on your post and start editing.
 
-New in `0.3.0.1`:
-- Block theme (FSE) support: on single templates the edit link is also output after the post content using the Block Hooks API (WordPress 6.4+). The Above/Below position setting applies to classic `the_content` / `the_excerpt` output; block themes use the hooked placement after post content.
-- Plugin icon shown next to the title on the settings page.
-
-New in `0.3.0.2`:
-- Confirmed compatibility with WordPress 7.1 and PHP 8.4.
-- Resolved PHP 8.4 deprecation warnings in the PHP version check.
-- Hooked translation loading and stylesheet enqueuing to proper hooks to prevent early-loading notices.
-- Hardened file security by adding direct access protection to all PHP files.
-- Removed outdated local translation files to reduce package size.
+### Key Features:
+* **Multiple Styles & Types:** Choose between a sleek **Button**, a modern **Circle**, or a clean **Plain Text** link.
+* **Custom Layouts:** Position the link **Above** or **Below** your post content, or choose to open the link in a **New Tab** or the **Same Tab**.
+* **Hover Customization:** Personalize the hover behavior with color selectors and smooth animations (Lift, Grow, Pulse, Glow, or None).
+* **Live Settings Preview:** Preview your button style, colors, and layout in real-time on the settings page before saving.
+* **Block Theme & FSE Support:** Fully compatible with classic themes as well as modern block themes (automatically hooks the edit link after the post content using the Block Hooks API on single templates).
+* **Secure and Lightweight:** Built with performance and security in mind, utilizing WordPress settings validation, nonces, and lightweight CSS.
 
 == Installation ==
 - Uncompress the download package
