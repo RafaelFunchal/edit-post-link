@@ -12,8 +12,11 @@
  * Requires at least: 6.0
  * Requires PHP: 7.0
  */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-$EditPostLink_minimalRequiredPhpVersion = '7.0';
+define( 'EDIT_POST_LINK_MIN_PHP_VERSION', '7.0' );
 
 /**
  * Check the PHP version and give a useful error message if the user's version is less than the required version
@@ -21,17 +24,15 @@ $EditPostLink_minimalRequiredPhpVersion = '7.0';
  * an error message on the Admin page
  */
 function EditPostLink_noticePhpVersionWrong() {
-	global $EditPostLink_minimalRequiredPhpVersion;
 	echo '<div class="updated fade">' .
 	  __('Error: plugin "Edit Post Link" requires a newer version of PHP to be running.',  'edit-post-link').
-			'<br/>' . __('Minimal version of PHP required: ', 'edit-post-link') . '<strong>' . $EditPostLink_minimalRequiredPhpVersion . '</strong>' .
+			'<br/>' . __('Minimal version of PHP required: ', 'edit-post-link') . '<strong>' . EDIT_POST_LINK_MIN_PHP_VERSION . '</strong>' .
 			'<br/>' . __('Your server\'s PHP version: ', 'edit-post-link') . '<strong>' . phpversion() . '</strong>' .
 		 '</div>';
 }
 
 function EditPostLink_PhpVersionCheck() {
-	global $EditPostLink_minimalRequiredPhpVersion;
-	if (version_compare(phpversion(), $EditPostLink_minimalRequiredPhpVersion) < 0) {
+	if (version_compare(phpversion(), EDIT_POST_LINK_MIN_PHP_VERSION) < 0) {
 		add_action('admin_notices', 'EditPostLink_noticePhpVersionWrong');
 		return false;
 	}
@@ -56,7 +57,7 @@ function EditPostLink_i18n_init() {
 /////////////////////////////////
 
 // First initialize i18n
-EditPostLink_i18n_init();
+add_action( 'init', 'EditPostLink_i18n_init' );
 
 // Next, run the version check.
 // If it is successful, continue with initialization for this plugin
