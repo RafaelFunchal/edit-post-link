@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 include_once('EditPostLink_LifeCycle.php');
 
 class EditPostLink_Plugin extends EditPostLink_LifeCycle {
@@ -97,7 +100,10 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 
 			// Adding scripts only when necessary.
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueueEditPostLinkAdminAssets' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueuePluginStyles' ) );
+		}
 
+		public function enqueuePluginStyles() {
 			if ( $this->shouldLoadPluginStyles() ) {
 				$styles_path = plugin_dir_path( __FILE__ ) . 'css/styles.css';
 				$styles_version = file_exists( $styles_path ) ? (string) filemtime( $styles_path ) : false;
