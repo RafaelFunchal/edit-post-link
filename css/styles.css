@@ -1,6 +1,19 @@
 /**
 * Edit Post Link CSS
 */
+.edit-post-link-wrap {
+	margin: 0.5em 0;
+}
+.edit-post-link-wrap.epl-align-left {
+	text-align: left;
+}
+.edit-post-link-wrap.epl-align-center {
+	text-align: center;
+}
+.edit-post-link-wrap.epl-align-right {
+	text-align: right;
+}
+
 .edit-post-link {
 	border-style: solid;
 	border-width: 2px;
@@ -15,8 +28,12 @@
 	line-height: 14px;
 	text-align: center;
 	text-transform: uppercase;
+	vertical-align: middle;
 	white-space: nowrap;
 	transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
 }
 .edit-post-link:focus-visible {
 	outline: 2px solid currentColor;
@@ -40,10 +57,9 @@
 	border-radius: 50%;
 	font-size: 0;
 	font-weight: bold;
-	margin-top: -20px;
 	overflow: hidden;
 	padding: 0;
-	position: absolute;
+	position: relative;
 	text-align: center;
 	text-decoration: none;
 	width: auto;
@@ -56,62 +72,51 @@
 		padding 340ms cubic-bezier(0.22, 1, 0.36, 1),
 		font-size 220ms ease 70ms,
 		transform 220ms ease;
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
 }
-.edit-post-link.epl-circle:hover {
+.edit-post-link.epl-circle:is(:hover, :focus-visible) {
 	max-width: min(85vw, 360px);
 	padding: 0 10px;
 	font-size: 12px;
 	border-radius: 999px;
 	transform: translateY(-1px);
-}
-.edit-post-link.epl-circle:focus-visible {
-	max-width: min(85vw, 360px);
-	padding: 0 10px;
-	font-size: 12px;
-	border-radius: 999px;
-	transform: translateY(-1px);
+	@media (prefers-reduced-motion: reduce) {
+		transform: none;
+	}
 }
 
 /* Hover Animations */
-.edit-post-link.epl-anim-none:hover {
-	transform: none;
-	box-shadow: none;
-	filter: none;
-}
-.edit-post-link.epl-anim-none:focus-visible {
+.edit-post-link.epl-anim-none:is(:hover, :focus-visible) {
 	transform: none;
 	box-shadow: none;
 	filter: none;
 }
 
-.edit-post-link.epl-anim-lift:hover {
+.edit-post-link.epl-anim-lift:is(:hover, :focus-visible) {
 	transform: translateY(-3px);
 	box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-}
-.edit-post-link.epl-anim-lift:focus-visible {
-	transform: translateY(-3px);
-	box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-}
-
-.edit-post-link.epl-anim-grow:hover {
-	transform: scale(1.06);
-}
-.edit-post-link.epl-anim-grow:focus-visible {
-	transform: scale(1.06);
+	@media (prefers-reduced-motion: reduce) {
+		transform: none;
+	}
 }
 
-.edit-post-link.epl-anim-pulse:hover {
+.edit-post-link.epl-anim-grow:is(:hover, :focus-visible) {
+	transform: scale(1.06);
+	@media (prefers-reduced-motion: reduce) {
+		transform: none;
+	}
+}
+
+.edit-post-link.epl-anim-pulse:is(:hover, :focus-visible) {
 	transform: scale(1.03);
 	box-shadow: 0 0 0 6px rgba(0,0,0,0.08);
-}
-.edit-post-link.epl-anim-pulse:focus-visible {
-	transform: scale(1.03);
-	box-shadow: 0 0 0 6px rgba(0,0,0,0.08);
+	@media (prefers-reduced-motion: reduce) {
+		transform: none;
+	}
 }
 
-.edit-post-link.epl-anim-glow:hover {
-	filter: drop-shadow(0 0 8px rgba(0,0,0,0.35));
-}
-.edit-post-link.epl-anim-glow:focus-visible {
+.edit-post-link.epl-anim-glow:is(:hover, :focus-visible) {
 	filter: drop-shadow(0 0 8px rgba(0,0,0,0.35));
 }

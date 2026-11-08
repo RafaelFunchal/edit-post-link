@@ -1,5 +1,6 @@
 jQuery(document).ready(function($){
     var config = window.editPostLinkConfig || {};
+    var defaultLinkText = config.defaultLinkText || 'Edit';
     var linkTypes = $.extend({
         button: 'Button',
         circle: 'Circle',
@@ -17,26 +18,35 @@ jQuery(document).ready(function($){
         above: 'Above Content',
         below: 'Below Content'
     }, config.positions || {});
+    var alignments = $.extend({
+        left: 'Left',
+        center: 'Center',
+        right: 'Right'
+    }, config.alignments || {});
 
-    var BGoptions = {
-	    defaultColor: false,
-	    change: function(event, ui){},
-	    clear: function() {},
-	    hide: true,
-	    palettes: true
-	};
-    $('#edit-post-link-bg-color').wpColorPicker( BGoptions );
+    function schedulePreviewRefresh() {
+        window.setTimeout(refreshPreview, 0);
+    }
 
-    var FONToptions = {
-	    defaultColor: false,
-	    change: function(event, ui){},
-	    clear: function() {},
-	    hide: true,
-	    palettes: true
-	};
-    $('#edit-post-link-font-color').wpColorPicker( FONToptions );
-    $('#edit-post-link-hover-bg-color').wpColorPicker( BGoptions );
-    $('#edit-post-link-hover-font-color').wpColorPicker( FONToptions );
+    var colorPickerOptions = {
+        defaultColor: false,
+        change: function(event, ui) {
+            if (ui && ui.color) {
+                $(event.target).val(ui.color.toString());
+            }
+            schedulePreviewRefresh();
+        },
+        clear: function() {
+            schedulePreviewRefresh();
+        },
+        hide: true,
+        palettes: true
+    };
+
+    $('#edit-post-link-bg-color').wpColorPicker( colorPickerOptions );
+    $('#edit-post-link-font-color').wpColorPicker( colorPickerOptions );
+    $('#edit-post-link-hover-bg-color').wpColorPicker( colorPickerOptions );
+    $('#edit-post-link-hover-font-color').wpColorPicker( colorPickerOptions );
 
     function isButtonSelected() {
         return $('#edit-post-link-type').val() === linkTypes.button;
@@ -68,6 +78,18 @@ jQuery(document).ready(function($){
             return 'epl-anim-glow';
         }
         return 'epl-anim-none';
+    }
+
+    function getAlignmentClass() {
+        var value = $('#edit-post-link-alignment').val();
+
+        if (value === alignments.center) {
+            return 'epl-align-center';
+        }
+        if (value === alignments.right) {
+            return 'epl-align-right';
+        }
+        return 'epl-align-left';
     }
 
     function buildLinkClass() {
@@ -108,12 +130,22 @@ jQuery(document).ready(function($){
     function refreshPreview() {
         var linkType = $('#edit-post-link-type').val();
         var position = $('#edit-post-link-position').val();
+        var alignmentClass = getAlignmentClass();
+        var rawText = $.trim($('#edit-post-link-text').val() || '');
+        var linkText = rawText || defaultLinkText;
         var linkClass = buildLinkClass();
         var bgColor = $('#edit-post-link-bg-color').val() || '';
         var fontColor = $('#edit-post-link-font-color').val() || '';
         var $previewTop = $('#epl-preview-link-above');
         var $previewBottom = $('#epl-preview-link-below');
+        var $previewWraps = $('#epl-preview-link-above, #epl-preview-link-below');
         var $previewLinks = $('#epl-preview-link, #epl-preview-link-duplicate');
+
+        $previewWraps
+            .removeClass('epl-align-left epl-align-center epl-align-right')
+            .addClass(alignmentClass);
+
+        $previewLinks.text(linkText);
 
         if (position === positions.above) {
             $previewTop.show();
@@ -192,13 +224,13 @@ jQuery(document).ready(function($){
     toggleHoverAnimationField();
     refreshPreview();
 
-    $('#edit-post-link-type, #edit-post-link-position, #edit-post-link-hover-animation').on('change', function() {
+    $('#edit-post-link-type, #edit-post-link-position, #edit-post-link-alignment, #edit-post-link-hover-animation').on('change', function() {
         toggleHoverAnimationField();
         toggleGroupTitles();
         refreshPreview();
     });
 
-    $('#edit-post-link-bg-color, #edit-post-link-font-color, #edit-post-link-hover-bg-color, #edit-post-link-hover-font-color').on('change input', refreshPreview);
+    $('#edit-post-link-text, #edit-post-link-bg-color, #edit-post-link-font-color, #edit-post-link-hover-bg-color, #edit-post-link-hover-font-color').on('change input', refreshPreview);
 
     toggleGroupTitles();
 });
