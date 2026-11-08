@@ -2,8 +2,8 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Edit Post Link 0.3.0.2\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/GIT\n"
+"Project-Id-Version: Edit Post Link 0.4.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/edit-post-link\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -241,4 +241,40 @@ msgstr ""
 
 #: EditPostLink_Plugin.php:358
 msgid "This is sample content to preview the link placement and style."
+msgstr ""
+
+#: EditPostLink_Plugin.php:23
+msgid "Link Text"
+msgstr ""
+
+#: EditPostLink_Plugin.php:29
+msgid "Alignment"
+msgstr ""
+
+#: EditPostLink_Plugin.php:29
+msgid "Left"
+msgstr ""
+
+#: EditPostLink_Plugin.php:29
+msgid "Center"
+msgstr ""
+
+#: EditPostLink_Plugin.php:29
+msgid "Right"
+msgstr ""
+
+#: EditPostLink_Plugin.php:30
+msgid "Display On"
+msgstr ""
+
+#: EditPostLink_Plugin.php:30
+msgid "All Views (Single & Archives)"
+msgstr ""
+
+#: EditPostLink_Plugin.php:30
+msgid "Single Posts & Pages Only"
+msgstr ""
+
+#: EditPostLink_Plugin.php:364
+msgid "Settings saved."
 msgstr ""

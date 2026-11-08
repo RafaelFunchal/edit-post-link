@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 6.0
 Tested up to: 7.1.4
 Requires PHP: 7.0
-Stable tag: 0.3.0.2
+Stable tag: 0.4.0
 
 A plugin to insert a stylized link to edit posts and pages
 
@@ -18,11 +18,12 @@ No more hunting for the admin bar or navigating the dashboard. Just click the bu
 
 ### Key Features:
 * **Multiple Styles & Types:** Choose between a sleek **Button**, a modern **Circle**, or a clean **Plain Text** link.
-* **Custom Layouts:** Position the link **Above** or **Below** your post content, or choose to open the link in a **New Tab** or the **Same Tab**.
+* **Custom Link Text & Alignment:** Customize the button label (defaulting to `Edit`) and align it **Left**, **Center**, or **Right**.
+* **Custom Layouts & Visibility:** Position the link **Above** or **Below** your post content, display it on **All Views** or **Single Posts & Pages Only**, and choose to open in a **New Tab** or the **Same Tab**.
 * **Hover Customization:** Personalize the hover behavior with color selectors and smooth animations (Lift, Grow, Pulse, Glow, or None).
-* **Live Settings Preview:** Preview your button style, colors, and layout in real-time on the settings page before saving.
-* **Block Theme & FSE Support:** Fully compatible with classic themes as well as modern block themes (automatically hooks the edit link after the post content using the Block Hooks API on single templates).
-* **Secure and Lightweight:** Built with performance and security in mind, utilizing WordPress settings validation, nonces, and lightweight CSS.
+* **Live Settings Preview:** Preview your button style, text, alignment, colors, and layout in real-time on the settings page before saving.
+* **Block Theme & FSE Support:** Fully compatible with classic themes as well as modern block themes via the Block Hooks API.
+* **Accessible, Secure & Lightweight:** Built with performance, accessibility (`prefers-reduced-motion`, contextual `aria-label` disambiguation, `:focus-visible` states), and WordPress security best practices in mind.
 
 == Installation ==
 - Uncompress the download package
@@ -41,6 +42,18 @@ No more hunting for the admin bar or navigating the dashboard. Just click the bu
 
 
 == Changelog ==
+
+= 0.4.0 =
+- Add custom Link Text setting (defaults to `Edit`).
+- Add Alignment setting (`Left`, `Center`, `Right`).
+- Add Display On scope setting (`All Views (Single & Archives)` or `Single Posts & Pages Only`).
+- Fix duplicate Edit link output on singular templates in block themes (FSE) and honor Above/Below Content position in block hooks.
+- Fix Live Preview not updating when selecting or clearing colors in the WordPress Iris color picker.
+- Show a confirmation notice when settings are saved.
+- Prevent outputting empty inline CSS rules when colors are unset.
+- Improve accessibility with contextual `aria-label` disambiguation and `prefers-reduced-motion` support.
+- Fix PHP 8 reference notice in `unPrefix()` and improve output escaping across settings controls.
+- Declare compatibility and test up to WordPress 7.1.4.
 
 = 0.3.0.2 =
 - Fix PHP 8.4 deprecation warning in PHP version check.
