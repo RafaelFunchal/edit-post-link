@@ -130,7 +130,7 @@ class EditPostLink_LifeCycle extends EditPostLink_InstallIndicator {
 						 $displayName,
 						 'manage_options',
 						 $this->getSettingsSlug(),
-						 array(&$this, 'settingsPage'));
+						 array($this, 'settingsPage'));
 	}
 
 
@@ -141,7 +141,7 @@ class EditPostLink_LifeCycle extends EditPostLink_InstallIndicator {
 						 $displayName,
 						 'manage_options',
 						 $this->getSettingsSlug(),
-						 array(&$this, 'settingsPage'));
+						 array($this, 'settingsPage'));
 	}
 
 	/**

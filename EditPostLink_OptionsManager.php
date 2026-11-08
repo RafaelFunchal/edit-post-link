@@ -86,7 +86,7 @@ class EditPostLink_OptionsManager {
 	 * @param  $name string
 	 * @return string $optionName without the prefix.
 	 */
-	public function &unPrefix($name) {
+	public function unPrefix($name) {
 		$optionNamePrefix = $this->getOptionNamePrefix();
 		if (strpos($name, $optionNamePrefix) === 0) {
 			return substr($name, strlen($optionNamePrefix));
@@ -225,18 +225,20 @@ class EditPostLink_OptionsManager {
 					  $pluginName,
 					  'administrator',
 					  get_class($this),
-					  array(&$this, 'settingsPage')
+					  array($this, 'settingsPage')
 		/*,plugins_url('/images/icon.png', __FILE__)*/); // if you call 'plugins_url; be sure to "require_once" it
 
 		//call register settings function
-		add_action('admin_init', array(&$this, 'registerSettings'));
+		add_action('admin_init', array($this, 'registerSettings'));
 	}
 
 	public function registerSettings() {
 		$settingsGroup = get_class($this) . '-settings-group';
 		$optionMetaData = $this->getOptionMetaData();
 		foreach ($optionMetaData as $aOptionKey => $aOptionMeta) {
-			register_setting($settingsGroup, $aOptionMeta);
+			register_setting($settingsGroup, $aOptionKey, array(
+				'sanitize_callback' => 'sanitize_text_field',
+			));
 		}
 	}
 
@@ -247,25 +249,26 @@ class EditPostLink_OptionsManager {
 	 */
 	public function settingsPage() {
 		if (!current_user_can('manage_options')) {
-			wp_die(__('You do not have sufficient permissions to access this page.', 'edit-post-link'));
+			wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'edit-post-link'));
 		}
 
 		$optionMetaData = $this->getOptionMetaData();
+		$settingsGroup = get_class($this) . '-settings-group';
 
 		// Save Posted Options
-		if ($optionMetaData != null) {
+		if (isset($_SERVER['REQUEST_METHOD']) && 'POST' === $_SERVER['REQUEST_METHOD'] && $optionMetaData != null) {
+			check_admin_referer($settingsGroup . '-options');
 			foreach ($optionMetaData as $aOptionKey => $aOptionMeta) {
 				if (isset($_POST[$aOptionKey])) {
-					$this->updateOption($aOptionKey, $_POST[$aOptionKey]);
+					$this->updateOption($aOptionKey, sanitize_text_field(wp_unslash($_POST[$aOptionKey])));
 				}
 			}
 		}
 
 		// HTML for the page
-		$settingsGroup = get_class($this) . '-settings-group';
 		?>
 		<div class="wrap">
-			<h2><?php echo $this->getPluginDisplayName(); echo ' '; _e('Settings', 'edit-post-link'); ?></h2>
+			<h2><?php echo esc_html($this->getPluginDisplayName()); echo ' '; esc_html_e('Settings', 'edit-post-link'); ?></h2>
 
 			<form method="post" action="">
 			<?php settings_fields($settingsGroup); ?>
@@ -276,7 +279,7 @@ class EditPostLink_OptionsManager {
 						$displayText = is_array($aOptionMeta) ? $aOptionMeta[0] : $aOptionMeta;
 						?>
 							<tr valign="top">
-								<th scope="row"><p><label for="<?php echo $aOptionKey ?>"><?php echo $displayText ?></label></p></th>
+								<th scope="row"><p><label for="<?php echo esc_attr($aOptionKey); ?>"><?php echo esc_html($displayText); ?></label></p></th>
 								<td>
 								<?php $this->createFormControl($aOptionKey, $aOptionMeta, $this->getOption($aOptionKey)); ?>
 								</td>
@@ -287,7 +290,7 @@ class EditPostLink_OptionsManager {
 				?>
 				</tbody></table>
 				<p class="submit">
-					<input type="submit" class="button-primary" value="<?php _e('Save Changes', 'edit-post-link') ?>"/>
+					<input type="submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'edit-post-link'); ?>"/>
 				</p>
 			</form>
 		</div>
@@ -306,12 +309,12 @@ class EditPostLink_OptionsManager {
 		if (is_array($aOptionMeta) && count($aOptionMeta) >= 2) { // Drop-down list
 			$choices = array_slice($aOptionMeta, 1);
 			?>
-			<p><select name="<?php echo $aOptionKey ?>" id="<?php echo $aOptionKey ?>">
+			<p><select name="<?php echo esc_attr($aOptionKey); ?>" id="<?php echo esc_attr($aOptionKey); ?>">
 			<?php
-							foreach ($choices as $aChoice) {
-				$selected = ($aChoice == $savedOptionValue) ? 'selected' : '';
+			foreach ($choices as $aChoice) {
+				$selected = ($aChoice == $savedOptionValue) ? 'selected="selected"' : '';
 				?>
-					<option value="<?php echo $aChoice ?>" <?php echo $selected ?>><?php echo $this->getOptionValueI18nString($aChoice) ?></option>
+					<option value="<?php echo esc_attr($aChoice); ?>" <?php echo $selected; ?>><?php echo esc_html($this->getOptionValueI18nString($aChoice)); ?></option>
 				<?php
 			}
 			?>
@@ -321,8 +324,8 @@ class EditPostLink_OptionsManager {
 		}
 		else { // Simple input field
 			?>
-			<p><input type="text" name="<?php echo $aOptionKey ?>" id="<?php echo $aOptionKey ?>"
-					  value="<?php echo esc_attr($savedOptionValue) ?>" size="50"/></p>
+			<p><input type="text" name="<?php echo esc_attr($aOptionKey); ?>" id="<?php echo esc_attr($aOptionKey); ?>"
+					  value="<?php echo esc_attr($savedOptionValue); ?>" size="50"/></p>
 			<?php
 
 		}
@@ -388,7 +391,8 @@ class EditPostLink_OptionsManager {
 	 */
 	public function getEmailDomain() {
 		// Get the site domain and get rid of www.
-		$sitename = strtolower($_SERVER['SERVER_NAME']);
+		$server_name = isset($_SERVER['SERVER_NAME']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_NAME'])) : '';
+		$sitename = strtolower($server_name);
 		if (substr($sitename, 0, 4) == 'www.') {
 			$sitename = substr($sitename, 4);
 		}

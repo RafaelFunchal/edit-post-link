@@ -5,7 +5,7 @@
  * Description: A plugin to insert a stylized link to edit posts and pages
  * Author: rafaelfunchal
  * Author URI: http://rafaelfunchal.com/
- * Version: 0.3.0.2
+ * Version: 0.4.0
  * License: GPLv2 or later
  * Text Domain: edit-post-link
  * Domain Path: /languages/
@@ -24,11 +24,11 @@ define( 'EDIT_POST_LINK_MIN_PHP_VERSION', '7.0' );
  * an error message on the Admin page
  */
 function EditPostLink_noticePhpVersionWrong() {
-	echo '<div class="updated fade">' .
-	  __('Error: plugin "Edit Post Link" requires a newer version of PHP to be running.',  'edit-post-link').
-			'<br/>' . __('Minimal version of PHP required: ', 'edit-post-link') . '<strong>' . EDIT_POST_LINK_MIN_PHP_VERSION . '</strong>' .
-			'<br/>' . __('Your server\'s PHP version: ', 'edit-post-link') . '<strong>' . phpversion() . '</strong>' .
-		 '</div>';
+	echo '<div class="notice notice-error"><p>' .
+		esc_html__( 'Error: plugin "Edit Post Link" requires a newer version of PHP to be running.', 'edit-post-link' ) .
+		'<br/>' . esc_html__( 'Minimal version of PHP required: ', 'edit-post-link' ) . '<strong>' . esc_html( EDIT_POST_LINK_MIN_PHP_VERSION ) . '</strong>' .
+		'<br/>' . esc_html__( 'Your server\'s PHP version: ', 'edit-post-link' ) . '<strong>' . esc_html( phpversion() ) . '</strong>' .
+		'</p></div>';
 }
 
 function EditPostLink_PhpVersionCheck() {
