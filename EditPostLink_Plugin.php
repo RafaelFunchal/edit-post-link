@@ -7,17 +7,28 @@ include_once('EditPostLink_LifeCycle.php');
 class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 
 		/**
+		 * Track post IDs that have already rendered an edit link in the current singular request
+		 * to prevent duplicate output between `the_content` and the Block Hooks API.
+		 *
+		 * @var array<int, bool>
+		 */
+		private $rendered_post_ids = array();
+
+		/**
 		 * See: http://plugin.michael-simpson.com/?page_id=31
 		 * @return array of option meta data.
 		 */
 		public function getOptionMetaData() {
 				return array(
 						//'_version' => array('Installed Version'), // Leave this one commented-out. Uncomment to test upgrades.
+						'edit-post-link-text' => array( __( 'Link Text', 'edit-post-link' ) ),
 						'edit-post-link-bg-color' => array( __('Background color', 'edit-post-link' ) ),
 						'edit-post-link-font-color' => array( __('Font color', 'edit-post-link' ) ),
 						'edit-post-link-hover-bg-color' => array( __('Hover Background color', 'edit-post-link' ) ),
 						'edit-post-link-hover-font-color' => array( __('Hover Font color', 'edit-post-link' ) ),
 						'edit-post-link-position' => array( __('Position', 'edit-post-link'), __('Above Content', 'edit-post-link'), __('Below Content', 'edit-post-link') ),
+						'edit-post-link-alignment' => array( __( 'Alignment', 'edit-post-link' ), __( 'Left', 'edit-post-link' ), __( 'Center', 'edit-post-link' ), __( 'Right', 'edit-post-link' ) ),
+						'edit-post-link-display-scope' => array( __( 'Display On', 'edit-post-link' ), __( 'All Views (Single & Archives)', 'edit-post-link' ), __( 'Single Posts & Pages Only', 'edit-post-link' ) ),
 						'edit-post-link-target' => array( __( 'Open Link In', 'edit-post-link' ), __('New Tab', 'edit-post-link'), __('Same Tab', 'edit-post-link') ),
 						'edit-post-link-type' => array( __( 'Link Type', 'edit-post-link'), __('Button', 'edit-post-link'), __('Circle', 'edit-post-link'), __('Plain Text', 'edit-post-link') ),
 						'edit-post-link-hover-animation' => array( __( 'Hover Animation', 'edit-post-link' ), __('None', 'edit-post-link'), __('Lift', 'edit-post-link'), __('Grow', 'edit-post-link'), __('Pulse', 'edit-post-link'), __('Glow', 'edit-post-link') )
@@ -33,6 +44,7 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 								}
 						}
 				}
+				$this->addOption( 'edit-post-link-text', __( 'Edit', 'edit-post-link' ) );
 		}
 
 		public function getPluginDisplayName() {
@@ -116,12 +128,16 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				return;
 			}
 
+			$script_path = plugin_dir_path( __FILE__ ) . 'js/iris-script.js';
+			$script_version = file_exists( $script_path ) ? (string) filemtime( $script_path ) : false;
+
 			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'color-picker-script', plugins_url( '/js/iris-script.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+			wp_enqueue_script( 'color-picker-script', plugins_url( '/js/iris-script.js', __FILE__ ), array( 'wp-color-picker' ), $script_version, true );
 			wp_localize_script(
 				'color-picker-script',
 				'editPostLinkConfig',
 				array(
+					'defaultLinkText' => __( 'Edit', 'edit-post-link' ),
 					'linkTypes' => array(
 						'button' => __( 'Button', 'edit-post-link' ),
 						'circle' => __( 'Circle', 'edit-post-link' ),
@@ -139,6 +155,11 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 						'above' => __( 'Above Content', 'edit-post-link' ),
 						'below' => __( 'Below Content', 'edit-post-link' ),
 					),
+					'alignments' => array(
+						'left' => __( 'Left', 'edit-post-link' ),
+						'center' => __( 'Center', 'edit-post-link' ),
+						'right' => __( 'Right', 'edit-post-link' ),
+					),
 				)
 			);
 			$styles_path = plugin_dir_path( __FILE__ ) . 'css/styles.css';
@@ -154,8 +175,20 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			return $this->showEditPostLink( $excerpt, true );
 		}
 
+		private function shouldDisplayInCurrentView() {
+			$display_scope = $this->getOption( 'edit-post-link-display-scope', __( 'All Views (Single & Archives)', 'edit-post-link' ) );
+			if ( $display_scope === __( 'Single Posts & Pages Only', 'edit-post-link' ) && ! is_singular() ) {
+				return false;
+			}
+			return true;
+		}
+
 		private function showEditPostLink( $content, $is_excerpt ) {
 			if ( is_admin() || is_feed() || is_search() ) {
+				return $content;
+			}
+
+			if ( ! $this->shouldDisplayInCurrentView() ) {
 				return $content;
 			}
 
@@ -164,14 +197,22 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				return $content;
 			}
 
+			if ( ! $is_excerpt && is_singular() && ! empty( $this->rendered_post_ids[ $post->ID ] ) ) {
+				return $content;
+			}
+
 			$edit_link = get_edit_post_link( $post->ID );
 			if ( ! $edit_link ) {
 				return $content;
 			}
 
+			if ( ! $is_excerpt && is_singular() ) {
+				$this->rendered_post_ids[ $post->ID ] = true;
+			}
+
 			// Excerpts should always append the link to keep summaries short and predictable.
 			$position = $is_excerpt ? __('Below Content', 'edit-post-link') : $this->getOption( 'edit-post-link-position' );
-			$link_html = $this->getEditPostLinkHtml( $edit_link );
+			$link_html = $this->getEditPostLinkHtml( $edit_link, $post->ID );
 
 			if ( $position === __('Above Content', 'edit-post-link') ) {
 				return $link_html . $content;
@@ -180,19 +221,47 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			return $content . $link_html;
 		}
 
-		private function getEditPostLinkHtml( $edit_link ) {
+		private function getLinkText() {
+			$custom_text = trim( (string) $this->getOption( 'edit-post-link-text', '' ) );
+			return '' !== $custom_text ? $custom_text : __( 'Edit', 'edit-post-link' );
+		}
+
+		private function getAlignmentClass() {
+			$alignment = $this->getOption( 'edit-post-link-alignment', __( 'Left', 'edit-post-link' ) );
+			if ( $alignment === __( 'Center', 'edit-post-link' ) ) {
+				return 'epl-align-center';
+			}
+			if ( $alignment === __( 'Right', 'edit-post-link' ) ) {
+				return 'epl-align-right';
+			}
+			return 'epl-align-left';
+		}
+
+		private function getEditPostLinkHtml( $edit_link, $post_id = 0 ) {
 			$link_type = $this->getOption( 'edit-post-link-type' );
 			$target_option = $this->getOption( 'edit-post-link-target', __('New Tab', 'edit-post-link') );
 			$target = $target_option === __('Same Tab', 'edit-post-link') ? '_self' : '_blank';
-			$rel = $target === '_blank' ? 'noopener noreferrer' : '';
+			$rel_attr = $target === '_blank' ? ' rel="noopener noreferrer"' : '';
+			$link_text = $this->getLinkText();
+			$wrap_class = 'edit-post-link-wrap ' . $this->getAlignmentClass();
+
+			$aria_label_attr = '';
+			if ( $post_id > 0 ) {
+				$post_title = wp_strip_all_tags( get_the_title( $post_id ) );
+				if ( '' !== $post_title ) {
+					$aria_label_attr = sprintf( ' aria-label="%s"', esc_attr( sprintf( '%1$s "%2$s"', $link_text, $post_title ) ) );
+				}
+			}
 
 			if ( $link_type === __('Plain Text', 'edit-post-link') || $link_type === __('Link', 'edit-post-link') ) {
 				return sprintf(
-					'<p><a href="%1$s" target="%2$s" rel="%3$s">%4$s</a></p>',
+					'<p class="%1$s"><a href="%2$s" target="%3$s"%4$s%5$s>%6$s</a></p>',
+					esc_attr( $wrap_class ),
 					esc_url( $edit_link ),
 					esc_attr( $target ),
-					esc_attr( $rel ),
-					esc_html__( 'Edit', 'edit-post-link' )
+					$rel_attr,
+					$aria_label_attr,
+					esc_html( $link_text )
 				);
 			}
 
@@ -207,12 +276,14 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			}
 
 			return sprintf(
-				'<p><a class="%1$s" href="%2$s" target="%3$s" rel="%4$s">%5$s</a></p>',
+				'<p class="%1$s"><a class="%2$s" href="%3$s" target="%4$s"%5$s%6$s>%7$s</a></p>',
+				esc_attr( $wrap_class ),
 				esc_attr( trim( $class_name ) ),
 				esc_url( $edit_link ),
 				esc_attr( $target ),
-				esc_attr( $rel ),
-				esc_html__( 'Edit', 'edit-post-link' )
+				$rel_attr,
+				$aria_label_attr,
+				esc_html( $link_text )
 			);
 		}
 
@@ -249,20 +320,25 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 
 	public function settingsPage() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'edit-post-link' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'edit-post-link' ) );
 		}
 
 		$optionMetaData = $this->getOptionMetaData();
 		$settingsGroup = get_class( $this ) . '-settings-group';
+		$settings_saved = false;
 
-		if ( 'POST' === $_SERVER['REQUEST_METHOD'] && null !== $optionMetaData ) {
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && null !== $optionMetaData ) {
 			check_admin_referer( $settingsGroup . '-options' );
 			foreach ( $optionMetaData as $aOptionKey => $aOptionMeta ) {
 				if ( isset( $_POST[ $aOptionKey ] ) ) {
 					$this->updateOption( $aOptionKey, $this->sanitizeOptionValue( $aOptionKey, wp_unslash( $_POST[ $aOptionKey ] ) ) );
 				}
 			}
+			$settings_saved = true;
 		}
+
+		$preview_text = $this->getLinkText();
+		$preview_align_class = $this->getAlignmentClass();
 		?>
 		<div class="wrap edit-post-link-settings-page">
 			<style>
@@ -287,8 +363,8 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				.edit-post-link-settings-page .epl-preview-surface { background: #f6f7f7; border: 1px dashed #c3c4c7; border-radius: 8px; padding: 14px; min-height: 140px; }
 				.edit-post-link-settings-page .epl-preview-post { background: #fff; border: 1px solid #dcdcde; border-radius: 6px; padding: 12px; position: relative; min-height: 85px; }
 				.edit-post-link-settings-page .epl-preview-text { margin: 0; color: #2c3338; line-height: 1.5; }
-				.edit-post-link-settings-page .epl-preview-link-wrap-above { margin-bottom: 10px; position: relative; min-height: 30px; }
-				.edit-post-link-settings-page .epl-preview-link-wrap-below { margin-top: 10px; position: relative; min-height: 30px; }
+				.edit-post-link-settings-page .epl-preview-link-wrap-above { margin: 0 0 10px; position: relative; min-height: 30px; }
+				.edit-post-link-settings-page .epl-preview-link-wrap-below { margin: 10px 0 0; position: relative; min-height: 30px; }
 				.edit-post-link-settings-page #edit-post-link-live-preview a { text-decoration: none; }
 				@media (max-width: 1100px) {
 					.edit-post-link-settings-page .epl-layout { grid-template-columns: 1fr; }
@@ -299,6 +375,11 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 				<img class="epl-title-icon" src="<?php echo esc_url( plugins_url( '/assets/icon.svg', __FILE__ ) ); ?>" alt="" aria-hidden="true" />
 				<span><?php echo esc_html( $this->getPluginDisplayName() ); ?> <?php esc_html_e( 'Settings', 'edit-post-link' ); ?></span>
 			</h2>
+			<?php if ( $settings_saved ) : ?>
+				<div class="notice notice-success is-dismissible">
+					<p><strong><?php esc_html_e( 'Settings saved.', 'edit-post-link' ); ?></strong></p>
+				</div>
+			<?php endif; ?>
 			<form method="post" action="">
 				<?php settings_fields( $settingsGroup ); ?>
 				<div class="epl-layout">
@@ -308,7 +389,15 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 						$option_groups = array(
 							'behavior' => array(
 								'title' => __( 'Behavior', 'edit-post-link' ),
-								'keys'  => array( 'edit-post-link-position', 'edit-post-link-type', 'edit-post-link-target', 'edit-post-link-hover-animation' ),
+								'keys'  => array(
+									'edit-post-link-text',
+									'edit-post-link-type',
+									'edit-post-link-position',
+									'edit-post-link-alignment',
+									'edit-post-link-display-scope',
+									'edit-post-link-target',
+									'edit-post-link-hover-animation',
+								),
 							),
 							'normal_colors' => array(
 								'title' => __( 'Default Colors', 'edit-post-link' ),
@@ -332,10 +421,14 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 									}
 									$aOptionMeta = $optionMetaData[ $option_key ];
 									$displayText = is_array( $aOptionMeta ) ? $aOptionMeta[0] : $aOptionMeta;
+									$savedValue = $this->getOption( $option_key );
+									if ( 'edit-post-link-text' === $option_key && ( false === $savedValue || null === $savedValue || '' === $savedValue ) ) {
+										$savedValue = __( 'Edit', 'edit-post-link' );
+									}
 									?>
 									<tr valign="top">
 										<th scope="row"><p><label for="<?php echo esc_attr( $option_key ); ?>"><?php echo esc_html( $displayText ); ?></label></p></th>
-										<td><?php $this->createFormControl( $option_key, $aOptionMeta, $this->getOption( $option_key ) ); ?></td>
+										<td><?php $this->createFormControl( $option_key, $aOptionMeta, $savedValue ); ?></td>
 									</tr>
 									<?php
 								}
@@ -352,12 +445,12 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 						<p><?php esc_html_e( 'Preview updates automatically as you change settings.', 'edit-post-link' ); ?></p>
 						<div id="edit-post-link-live-preview" class="epl-preview-surface">
 							<div class="epl-preview-post">
-								<p id="epl-preview-link-above" class="epl-preview-link-wrap-above">
-									<a id="epl-preview-link" class="edit-post-link epl-button epl-anim-none" href="#" onclick="return false;"><?php esc_html_e( 'Edit', 'edit-post-link' ); ?></a>
+								<p id="epl-preview-link-above" class="epl-preview-link-wrap-above edit-post-link-wrap <?php echo esc_attr( $preview_align_class ); ?>">
+									<a id="epl-preview-link" class="edit-post-link epl-button epl-anim-none" href="#" onclick="return false;"><?php echo esc_html( $preview_text ); ?></a>
 								</p>
 								<p class="epl-preview-text"><?php esc_html_e( 'This is sample content to preview the link placement and style.', 'edit-post-link' ); ?></p>
-								<p id="epl-preview-link-below" class="epl-preview-link-wrap-below" style="display:none;">
-									<a id="epl-preview-link-duplicate" class="edit-post-link epl-button epl-anim-none" href="#" onclick="return false;"><?php esc_html_e( 'Edit', 'edit-post-link' ); ?></a>
+								<p id="epl-preview-link-below" class="epl-preview-link-wrap-below edit-post-link-wrap <?php echo esc_attr( $preview_align_class ); ?>" style="display:none;">
+									<a id="epl-preview-link-duplicate" class="edit-post-link epl-button epl-anim-none" href="#" onclick="return false;"><?php echo esc_html( $preview_text ); ?></a>
 								</p>
 							</div>
 						</div>
@@ -373,6 +466,11 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 
 	private function sanitizeOptionValue( $option_key, $raw_value ) {
 		$value = sanitize_text_field( (string) $raw_value );
+
+		if ( 'edit-post-link-text' === $option_key ) {
+			$trimmed = trim( $value );
+			return '' !== $trimmed ? $trimmed : __( 'Edit', 'edit-post-link' );
+		}
 
 		$color_option_keys = array(
 			'edit-post-link-bg-color',
@@ -401,27 +499,43 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 
 	public function stylesEditPostLink() {
 		if ( $this->shouldLoadPluginStyles() ) {
+			$bg_color = trim( (string) $this->getOption( 'edit-post-link-bg-color' ) );
+			$font_color = trim( (string) $this->getOption( 'edit-post-link-font-color' ) );
 			$hover_bg_color = trim( (string) $this->getOption( 'edit-post-link-hover-bg-color' ) );
 			$hover_font_color = trim( (string) $this->getOption( 'edit-post-link-hover-font-color' ) );
-			$hover_rules = '';
 
+			$default_rules = '';
+			if ( '' !== $bg_color ) {
+				$default_rules .= 'background-color: ' . esc_html( $bg_color ) . ' !important;';
+			}
+			if ( '' !== $font_color ) {
+				$default_rules .= 'color: ' . esc_html( $font_color ) . ' !important;';
+			}
+
+			$hover_rules = '';
 			if ( '' !== $hover_bg_color ) {
 				$hover_rules .= 'background-color: ' . esc_html( $hover_bg_color ) . ' !important;';
 			}
-
 			if ( '' !== $hover_font_color ) {
 				$hover_rules .= 'color: ' . esc_html( $hover_font_color ) . ' !important;';
 			}
 
-			$styles = sprintf( '<style type="text/css" media="screen">
-			.edit-post-link { background-color: %1$s !important; color: %2$s !important; }
-			%3$s
-			</style>',
-				esc_html( $this->getOption( 'edit-post-link-bg-color' ) ),
-				esc_html( $this->getOption( 'edit-post-link-font-color' ) ),
-				$hover_rules ? '.edit-post-link.epl-button:hover, .edit-post-link.epl-circle:hover { ' . $hover_rules . ' }' : ''
+			if ( '' === $default_rules && '' === $hover_rules ) {
+				return;
+			}
+
+			$css_output = '';
+			if ( '' !== $default_rules ) {
+				$css_output .= '.edit-post-link { ' . $default_rules . ' }' . "\n";
+			}
+			if ( '' !== $hover_rules ) {
+				$css_output .= '.edit-post-link.epl-button:hover, .edit-post-link.epl-circle:hover { ' . $hover_rules . ' }' . "\n";
+			}
+
+			printf(
+				"<style type=\"text/css\" media=\"screen\">\n%s</style>\n",
+				$css_output // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Values escaped with esc_html above.
 			);
-			echo $styles;
 		}
 	}
 
@@ -441,10 +555,13 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 
 	/**
 	 * Render callback for the dynamic edit post link block.
-	 * Hooked after post content on single templates; Above/Below applies to classic the_content / the_excerpt output.
 	 */
 	public function render_edit_post_link_block( $attributes = array(), $content = '', $block = null ) {
 		if ( is_admin() || is_feed() || is_search() ) {
+			return '';
+		}
+
+		if ( ! $this->shouldDisplayInCurrentView() ) {
 			return '';
 		}
 
@@ -453,24 +570,34 @@ class EditPostLink_Plugin extends EditPostLink_LifeCycle {
 			return '';
 		}
 
+		if ( is_singular() && ! empty( $this->rendered_post_ids[ $post_id ] ) ) {
+			return '';
+		}
+
 		$edit_link = get_edit_post_link( $post_id );
 		if ( ! $edit_link ) {
 			return '';
 		}
 
-		return $this->getEditPostLinkHtml( $edit_link );
+		if ( is_singular() ) {
+			$this->rendered_post_ids[ $post_id ] = true;
+		}
+
+		return $this->getEditPostLinkHtml( $edit_link, $post_id );
 	}
 
 	/**
-	 * Hook the edit post link block after the post content block in block themes.
+	 * Hook the edit post link block before or after the post content block in block themes.
 	 */
 	public function hook_edit_post_link_block( $hooked_block_types, $relative_position, $anchor_block_type, $context ) {
+		$expected_position = ( $this->getOption( 'edit-post-link-position' ) === __( 'Above Content', 'edit-post-link' ) ) ? 'before' : 'after';
+
 		if (
-			$relative_position === 'after' &&
+			$relative_position === $expected_position &&
 			$anchor_block_type === 'core/post-content' &&
 			$context instanceof WP_Block_Template &&
 			property_exists( $context, 'slug' ) &&
-			$context->slug === 'single'
+			in_array( $context->slug, array( 'single', 'page', 'singular' ), true )
 		) {
 			$hooked_block_types[] = 'edit-post-link/edit-link';
 		}
